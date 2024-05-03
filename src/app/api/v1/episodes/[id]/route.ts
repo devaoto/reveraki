@@ -94,8 +94,8 @@ const getOrSetCache = async (key: string, fetchData: Function) => {
 
 const findEpisodeData = (
   episodes: Episode[],
-  metadata: AnimeData,
   information: any,
+  metadata?: AnimeData,
   episodeImages?: MetadataProviderData[] | undefined
 ): any => {
   try {
@@ -112,10 +112,24 @@ const findEpisodeData = (
         foundImage = null;
       }
 
+      let foundMetadata;
       // Find the metadata for the episode
-      const foundMetadata = metadata.metadatas.find(
-        (meta) => meta.number === episode.number
-      );
+      if (metadata) {
+        foundMetadata = metadata.metadatas.find(
+          (meta) => meta.number === episode.number
+        );
+      } else {
+        foundMetadata = {
+          metadatas: [
+            {
+              number: null,
+              title: null,
+              fullTitle: null,
+              thumbnail: null,
+            },
+          ],
+        };
+      }
 
       // Construct episode information
       const img =
@@ -163,7 +177,7 @@ const findEpisodeData = (
   } catch (error) {
     return episodes.map((episode) => {
       // Find the metadata for the episode
-      const foundMetadata = metadata.metadatas.find(
+      const foundMetadata = metadata?.metadatas.find(
         (meta) => meta.number === episode.number
       );
 
@@ -209,155 +223,101 @@ export const GET = async (request: NextRequest, { params }: Params) => {
   try {
     const cacheKey = `episodesData:${params.id}`;
     const cachedEpisodes = await getOrSetCache(cacheKey, async () => {
-      try {
-        const episodeImagesPromise = axios.get(
-          'https://api.anify.tv/content-metadata/' + params.id,
-          { timeout: 2000 }
-        );
-        const episodeMetadataPromise = axios.get(
+      const episodeImagesPromise = axios
+        .get('https://api.anify.tv/content-metadata/' + params.id, {
+          timeout: 2000,
+        })
+        .catch((e) => undefined);
+      const episodeMetadataPromise = axios
+        .get(
           `${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/episodesMetadata/${params.id}`
-        );
-        const informationPromise = axios.get(
-          `${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/info/${params.id}`
-        );
+        )
+        .catch((e) => undefined);
+      const informationPromise = axios
+        .get(`${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/info/${params.id}`)
+        .catch((e) => undefined);
 
-        const [episodeImagesData, episodeMetadataData, informationData] =
-          await Promise.all([
-            episodeImagesPromise,
-            episodeMetadataPromise,
-            informationPromise,
-          ]);
-
-        const [episodeImages, episodeMetadata, information] = await Promise.all(
-          [
-            episodeImagesData.data as Promise<MetadataProviderData[]>,
-            episodeMetadataData.data as Promise<AnimeData>,
-            informationData.data,
-          ]
-        );
-
-        try {
-          const anifyEpisodes = (
-            await axios.get(
-              `https://api.anify.tv/info/${params.id}?fields=[episodes]`
-            )
-          ).data as EpisodesResponse;
-
-          return anifyEpisodes.episodes.data.map((anifyEpisode) => ({
-            episodes: findEpisodeData(
-              anifyEpisode.episodes,
-              episodeMetadata,
-              information,
-              episodeImages
-            ),
-            providerId:
-              anifyEpisode.providerId === 'zoro' ? 'anirise' : 'anizone',
-          }));
-        } catch (error) {
-          let consumetEpisodes: EpisodeConsumet[] = [];
-          try {
-            consumetEpisodes = (
-              await axios.get(
-                `${process.env.CONSUMET_API}/meta/anilist/episodes/${params.id}`
-              )
-            ).data;
-          } catch (consumetError) {
-            console.error(
-              'Error fetching episodes from consumet API:',
-              consumetError
-            );
-            return NextResponse.json(
-              {
-                message: 'Internal Server Error',
-                status: 500,
-              },
-              { status: 500 }
-            );
-          }
-
-          const convertedEpisodes = consumetEpisodes.map(convertToEpisode);
-
-          return [
-            {
-              episodes: findEpisodeData(
-                convertedEpisodes as Episode[],
-                episodeMetadata,
-                information,
-                episodeImages
-              ),
-              providerId: 'anizone',
-            },
-          ];
-        }
-      } catch (error) {
-        const episodeMetadataPromise = axios.get(
-          `${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/episodesMetadata/${params.id}`
-        );
-        const informationPromise = axios.get(
-          `${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/info/${params.id}`
-        );
-
-        const [episodeMetadataData, informationData] = await Promise.all([
+      const [episodeImagesData, episodeMetadataData, informationData] =
+        await Promise.all([
+          episodeImagesPromise,
           episodeMetadataPromise,
           informationPromise,
         ]);
 
-        const [episodeMetadata, information] = await Promise.all([
-          episodeMetadataData.data as Promise<AnimeData>,
-          informationData.data,
-        ]);
+      let episodeImages;
+      let episodeMetadata;
+      let information;
 
+      if (
+        episodeImagesData === undefined ||
+        episodeMetadataData === undefined
+      ) {
+        episodeImages = undefined;
+        episodeMetadata = undefined;
+      }
+
+      [episodeImages, episodeMetadata, information] = await Promise.all([
+        episodeImagesData !== undefined
+          ? (episodeImagesData.data as Promise<MetadataProviderData[]>)
+          : new Promise((r) => r(undefined)),
+        episodeMetadataData !== undefined
+          ? (episodeMetadataData.data as Promise<AnimeData>)
+          : new Promise((r) => r(undefined)),
+        informationData?.data,
+      ]);
+
+      try {
+        const anifyEpisodes = (
+          await axios.get(
+            `https://api.anify.tv/info/${params.id}?fields=[episodes]`
+          )
+        ).data as EpisodesResponse;
+
+        return anifyEpisodes.episodes.data.map((anifyEpisode) => ({
+          episodes: findEpisodeData(
+            anifyEpisode.episodes,
+            information,
+            episodeMetadata as AnimeData | undefined,
+            episodeImages as MetadataProviderData[] | undefined
+          ),
+          providerId:
+            anifyEpisode.providerId === 'zoro' ? 'anirise' : 'anizone',
+        }));
+      } catch (error) {
+        let consumetEpisodes: EpisodeConsumet[] = [];
         try {
-          const anifyEpisodes = (
+          consumetEpisodes = (
             await axios.get(
-              `https://api.anify.tv/info/${params.id}?fields=[episodes]`
+              `${process.env.CONSUMET_API}/meta/anilist/episodes/${params.id}`
             )
-          ).data as EpisodesResponse;
-
-          return anifyEpisodes.episodes.data.map((anifyEpisode) => ({
-            episodes: findEpisodeData(
-              anifyEpisode.episodes,
-              episodeMetadata,
-              information
-            ),
-            providerId:
-              anifyEpisode.providerId === 'zoro' ? 'anirise' : 'anizone',
-          }));
-        } catch (error) {
-          let consumetEpisodes: EpisodeConsumet[] = [];
-          try {
-            consumetEpisodes = (
-              await axios.get(
-                `${process.env.CONSUMET_API}/meta/anilist/episodes/${params.id}`
-              )
-            ).data;
-          } catch (consumetError) {
-            console.error(
-              'Error fetching episodes from consumet API:',
-              consumetError
-            );
-            return NextResponse.json(
-              {
-                message: 'Internal Server Error',
-                status: 500,
-              },
-              { status: 500 }
-            );
-          }
-
-          const convertedEpisodes = consumetEpisodes.map(convertToEpisode);
-
-          return [
+          ).data;
+        } catch (consumetError) {
+          console.error(
+            'Error fetching episodes from consumet API:',
+            consumetError
+          );
+          return NextResponse.json(
             {
-              episodes: findEpisodeData(
-                convertedEpisodes as Episode[],
-                episodeMetadata,
-                information
-              ),
-              providerId: 'anizone',
+              message: 'Internal Server Error',
+              status: 500,
             },
-          ];
+            { status: 500 }
+          );
         }
+
+        const convertedEpisodes = consumetEpisodes.map(convertToEpisode);
+
+        return [
+          {
+            episodes: findEpisodeData(
+              convertedEpisodes as Episode[],
+              information,
+              episodeMetadata as AnimeData | undefined,
+              episodeImages as MetadataProviderData[] | undefined
+            ),
+            providerId: 'anizone',
+          },
+        ];
       }
     });
 
