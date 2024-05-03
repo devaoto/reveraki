@@ -1,0 +1,46 @@
+import NodeCache from 'node-cache';
+import Redis from 'ioredis';
+
+export namespace cache {
+  let cacheInstance: NodeCache | Redis;
+
+  export async function get(key: string): Promise<any> {
+    if (!cacheInstance) {
+      cacheInstance = process.env.REDIS_URI
+        ? new Redis(process.env.REDIS_URI)
+        : new NodeCache();
+    }
+
+    if (isRedis(cacheInstance)) {
+      return await cacheInstance.get(key);
+    } else {
+      return (cacheInstance as NodeCache).get(key);
+    }
+  }
+
+  export async function set(
+    key: string,
+    value: any,
+    expireTime?: number
+  ): Promise<void> {
+    if (!cacheInstance) {
+      cacheInstance = process.env.REDIS_URI
+        ? new Redis(process.env.REDIS_URI)
+        : new NodeCache();
+    }
+
+    if (isRedis(cacheInstance)) {
+      if (expireTime) {
+        await (cacheInstance as Redis).set(key, value, 'EX', expireTime);
+      } else {
+        await (cacheInstance as Redis).set(key, value);
+      }
+    } else {
+      (cacheInstance as NodeCache).set(key, value, expireTime ?? 3600);
+    }
+  }
+
+  function isRedis(cache: NodeCache | Redis): boolean {
+    return cache instanceof Redis;
+  }
+}
