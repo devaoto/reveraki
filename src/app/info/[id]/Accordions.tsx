@@ -21,7 +21,7 @@ export const AccordionComponent = ({
   info: AnimeInfo;
   characters: CharacterRes;
   id: string;
-  episodes: any;
+  episodes?: any;
 }) => {
   return (
     <Accordion>
@@ -72,9 +72,11 @@ export const AccordionComponent = ({
           </div>
         </div>
       </AccordionItem>
-      <AccordionItem key="2" aria-label="Episodes" title="Episodes">
-        <EpisodesList episodes={episodes} id={id} />
-      </AccordionItem>
+      {episodes && (
+        <AccordionItem key="2" aria-label="Episodes" title="Episodes">
+          <EpisodesList episodes={episodes} id={id} />
+        </AccordionItem>
+      )}
       <AccordionItem key="3" aria-label="Characters" title="Characters">
         <Characters characters={characters} />
       </AccordionItem>

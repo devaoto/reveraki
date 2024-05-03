@@ -65,13 +65,48 @@ const Info: React.FC<{ params: Params }> = ({ params }) => {
                   </div>
                   <div className="flex w-full justify-center md:justify-start lg:justify-start">
                     <div className="flex flex-row gap-3">
-                      <Link href={`/watch/${params.id}/1`}>
-                        <Button className="max-w-[120px]" color={'success'}>
-                          <div className="flex gap-1 items-center">
-                            <FaPlayCircle /> <span>Watch Now</span>
-                          </div>
-                        </Button>
-                      </Link>
+                      <Tooltip
+                        placement="top"
+                        color={episodes?.length! > 0 ? 'success' : 'secondary'}
+                        content={
+                          episodes?.length! > 0
+                            ? `${episodes?.[0].title}`
+                            : 'No episodes available'
+                        }
+                      >
+                        <div
+                          className={`${
+                            episodes?.length! > 0 ? '' : 'cursor-no-drop'
+                          }`}
+                        >
+                          <Link
+                            href={
+                              episodes?.length! > 0
+                                ? `/watch/${params.id}/1`
+                                : '#'
+                            }
+                            className={`${
+                              episodes?.length! > 0 ? '' : 'cursor-no-drop'
+                            }`}
+                          >
+                            <Button
+                              isDisabled={episodes?.length! > 0 ? false : true}
+                              className={`max-w-[120px] ${
+                                episodes?.length! > 0
+                                  ? 'cursor-pointer'
+                                  : 'cursor-no-drop'
+                              }`}
+                              color={
+                                episodes?.length! > 0 ? 'success' : 'secondary'
+                              }
+                            >
+                              <div className="flex gap-1 items-center">
+                                <FaPlayCircle /> <span>Watch Now</span>
+                              </div>
+                            </Button>
+                          </Link>
+                        </div>
+                      </Tooltip>
                       <Tooltip
                         placement="top"
                         color="danger"
@@ -98,12 +133,20 @@ const Info: React.FC<{ params: Params }> = ({ params }) => {
         </div>
       </div>
       <div className="mt-20 ml-5">
-        <AccordionComponent
-          info={info}
-          characters={characters}
-          episodes={episodes}
-          id={params.id}
-        />
+        {episodes?.length! > 0 ? (
+          <AccordionComponent
+            info={info}
+            characters={characters}
+            episodes={episodes}
+            id={params.id}
+          />
+        ) : (
+          <AccordionComponent
+            info={info}
+            characters={characters}
+            id={params.id}
+          />
+        )}
       </div>
     </>
   );
