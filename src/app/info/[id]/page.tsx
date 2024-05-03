@@ -2,10 +2,11 @@ import { getInfo, getEpisodes, getCharacters } from '@/functions/requests';
 import { AnimeInfo, CharacterRes } from '@/types/site';
 import React, { use } from 'react';
 import { InfoImg } from './Img';
-import { Button, Chip, Image } from '@nextui-org/react';
+import { Button, Chip, Image, Tooltip } from '@nextui-org/react';
 import { GenerateColoredElementByStatus } from '@/functions/jsxUtilityFunctions';
 import { FaPlayCircle } from 'react-icons/fa';
 import { AccordionComponent } from './Accordions';
+import Link from 'next/link';
 
 interface Params {
   id: string;
@@ -64,16 +65,30 @@ const Info: React.FC<{ params: Params }> = ({ params }) => {
                   </div>
                   <div className="flex w-full justify-center md:justify-start lg:justify-start">
                     <div className="flex flex-row gap-3">
-                      <Button className="max-w-[120px]" color={'success'}>
-                        <div className="flex gap-1 items-center">
-                          <FaPlayCircle /> <span>Watch Now</span>
+                      <Link href={`/watch/${params.id}/1`}>
+                        <Button className="max-w-[120px]" color={'success'}>
+                          <div className="flex gap-1 items-center">
+                            <FaPlayCircle /> <span>Watch Now</span>
+                          </div>
+                        </Button>
+                      </Link>
+                      <Tooltip
+                        placement="top"
+                        color="danger"
+                        content="Not yet implemented"
+                      >
+                        <div className="cursor-no-drop">
+                          <Button
+                            isDisabled
+                            className="max-w-[120px]"
+                            color={'danger'}
+                          >
+                            <div className="flex gap-1 items-center">
+                              <span>Add to list</span>
+                            </div>
+                          </Button>
                         </div>
-                      </Button>
-                      <Button className="max-w-[120px]" color={'danger'}>
-                        <div className="flex gap-1 items-center">
-                          <span>Add to list</span>
-                        </div>
-                      </Button>
+                      </Tooltip>
                     </div>
                   </div>
                 </div>
