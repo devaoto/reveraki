@@ -2,7 +2,7 @@
 
 import { getCurrentSeason } from './utilityFunctions';
 import { cache } from './cache';
-import { SiteAnime } from '@/types/site';
+import { SiteAnime, SiteEpisode } from '@/types/site';
 
 const FetchDataAndCache = async (
   url: string,
@@ -496,9 +496,16 @@ export async function getEpisodes(id: string) {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/episodes/${id}`
     );
-    return ((await response.json()) as SiteAnime[]).find(
-      (p) => p.providerId === 'anizone'
-    )?.episodes;
+    let episodes: SiteEpisode[] | undefined;
+
+    try {
+      episodes = ((await response.json()) as SiteAnime[]).find(
+        (p) => p.providerId === 'anizone'
+      )?.episodes;
+    } catch (error) {
+      episodes = [];
+    }
+    return episodes;
   } catch (error) {
     console.error(error);
   }

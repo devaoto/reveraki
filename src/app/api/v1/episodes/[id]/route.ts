@@ -3,6 +3,7 @@ import { cache } from '@/functions/cache';
 import axios from 'axios';
 import {
   EpisodeConsumet,
+  IEpisode,
   convertToEpisode,
 } from '@/functions/utilityFunctions';
 
@@ -221,7 +222,7 @@ const findEpisodeData = (
 
 export const GET = async (request: NextRequest, { params }: Params) => {
   try {
-    const cacheKey = `episodesData:${params.id}`;
+    const cacheKey = `episodesData1:${params.id}`;
     const cachedEpisodes = await getOrSetCache(cacheKey, async () => {
       const episodeImagesPromise = axios
         .get('https://api.anify.tv/content-metadata/' + params.id, {
@@ -273,16 +274,26 @@ export const GET = async (request: NextRequest, { params }: Params) => {
           )
         ).data as EpisodesResponse;
 
-        return anifyEpisodes.episodes.data.map((anifyEpisode) => ({
-          episodes: findEpisodeData(
-            anifyEpisode.episodes,
-            information,
-            episodeMetadata as AnimeData | undefined,
-            episodeImages as MetadataProviderData[] | undefined
-          ),
-          providerId:
-            anifyEpisode.providerId === 'zoro' ? 'anirise' : 'anizone',
-        }));
+        let eps;
+
+        if (anifyEpisodes.episodes.data.length > 0) {
+          eps = anifyEpisodes.episodes.data.map((anifyEpisode) => ({
+            episodes: findEpisodeData(
+              anifyEpisode.episodes,
+              information,
+              episodeMetadata as AnimeData | undefined,
+              episodeImages as MetadataProviderData[] | undefined
+            ),
+            providerId:
+              anifyEpisode.providerId === 'zoro' ? 'anirise' : 'anizone',
+          }));
+        } else {
+          eps = {
+            episodes: [],
+            providerId: 'anizone',
+          };
+        }
+        return eps;
       } catch (error) {
         let consumetEpisodes: EpisodeConsumet[] = [];
         try {
@@ -305,19 +316,38 @@ export const GET = async (request: NextRequest, { params }: Params) => {
           );
         }
 
-        const convertedEpisodes = consumetEpisodes.map(convertToEpisode);
+        let convertedEpisodes: IEpisode[] | undefined;
 
-        return [
-          {
-            episodes: findEpisodeData(
-              convertedEpisodes as Episode[],
-              information,
-              episodeMetadata as AnimeData | undefined,
-              episodeImages as MetadataProviderData[] | undefined
-            ),
-            providerId: 'anizone',
-          },
-        ];
+        if (consumetEpisodes.length > 0) {
+          convertedEpisodes = consumetEpisodes.map(convertToEpisode);
+        } else {
+          convertedEpisodes = [];
+        }
+
+        let ceps;
+
+        if (convertedEpisodes.length > 0) {
+          ceps = [
+            {
+              episodes: findEpisodeData(
+                convertedEpisodes as Episode[],
+                information,
+                episodeMetadata as AnimeData | undefined,
+                episodeImages as MetadataProviderData[] | undefined
+              ),
+              providerId: 'anizone',
+            },
+          ];
+        } else {
+          ceps = [
+            {
+              episodes: [],
+              providerId: 'anizone',
+            },
+          ];
+        }
+
+        return ceps;
       }
     });
 
