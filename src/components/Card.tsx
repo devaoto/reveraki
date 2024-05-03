@@ -121,7 +121,7 @@ export const Cards = ({ data }: { data: ConsumetAnimePage }) => {
                 </Tooltip>{' '}
                 |{' '}
                 <Tooltip placement="top" color="danger" content="Type">
-                  {anime?.type === 'TV' ? 'ANIME' : 'MANGA'}
+                  {anime?.type === 'TV' ? 'ANIME' : anime.type}
                 </Tooltip>
               </div>
             </SwiperSlide>

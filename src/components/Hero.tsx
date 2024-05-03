@@ -7,11 +7,16 @@ import { useEffect, useState } from 'react';
 import RenderVideo from './Video';
 import { GenerateColoredElementByStatus } from '@/functions/jsxUtilityFunctions';
 import { FaCalendarAlt, FaPlayCircle } from 'react-icons/fa';
-import { Button } from '@nextui-org/react';
+import { Button, Link, Tooltip } from '@nextui-org/react';
+import { SiteEpisode } from '@/types/site';
+import { getEpisodes } from '@/functions/clientRequests';
 
 export const Hero = ({ data }: { data: ConsumetAnimePage }) => {
   const [trailer, setTrailer] = useState<any>();
   const [randomAnime, setRandomAnime] = useState<ConsumetAnime>();
+  const [episodes, setEpisodes] = useState<SiteEpisode[] | undefined | null>(
+    null
+  );
 
   useEffect(() => {
     setRandomAnime(getRandom(...data.results));
@@ -39,6 +44,21 @@ export const Hero = ({ data }: { data: ConsumetAnimePage }) => {
       fetchTrailer(randomAnime.trailer.id);
     }
   }, [randomAnime?.trailer.id]);
+
+  useEffect(() => {
+    async function fetchEpisodes(id: string) {
+      try {
+        setEpisodes(await getEpisodes(id));
+      } catch (error) {
+        console.error('Error fetching episodes:', error);
+        setEpisodes(undefined);
+      }
+    }
+
+    if (randomAnime?.id) {
+      fetchEpisodes(randomAnime.id);
+    }
+  }, [randomAnime?.id]);
 
   return (
     <>
@@ -89,9 +109,31 @@ export const Hero = ({ data }: { data: ConsumetAnimePage }) => {
                   dangerouslySetInnerHTML={{ __html: randomAnime.description }}
                 />
               </div>
-              <Button className="ml-5" color={'primary'}>
-                <FaPlayCircle /> <span>Watch Now</span>
-              </Button>
+              <Tooltip
+                placement="top"
+                color={episodes?.length! > 0 ? 'primary' : 'secondary'}
+                content={
+                  episodes?.length! > 0
+                    ? `${episodes?.[0].title}`
+                    : 'No episode available'
+                }
+              >
+                <Link
+                  href={`${
+                    episodes?.length! > 0 ? `/watch/${randomAnime.id}/1` : '#'
+                  }`}
+                  className={`${
+                    episodes?.length! > 0 ? 'cursor-no-drop' : 'cursor-pointer'
+                  }`}
+                >
+                  <Button
+                    className="ml-5"
+                    color={episodes?.length! > 0 ? 'primary' : 'secondary'}
+                  >
+                    <FaPlayCircle /> <span>Watch Now</span>
+                  </Button>
+                </Link>
+              </Tooltip>
             </div>
           </div>
         </div>
