@@ -44,7 +44,7 @@ export default function Watch({
   return (
     <>
       <div className="flex flex-col md:flex-row justify-center">
-        <div className="md:mr-5 flex-grow max-w-6xl">
+        <div className="md:mr-5 flex-grow max-w-4xl">
           <div className="flex flex-col gap-2">
             <Player
               hls={source}
@@ -59,7 +59,7 @@ export default function Watch({
           <EpisodesList episodes={episode!} id={params.id} />
         </div>
       </div>
-      <div>
+      <div className="ml-5 mt-10">
         <Accordions info={info!} />
       </div>
     </>
