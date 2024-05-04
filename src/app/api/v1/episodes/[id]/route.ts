@@ -133,19 +133,13 @@ const findEpisodeData = (
       }
 
       // Construct episode information
-      const img =
-        foundImage?.img ??
-        foundMetadata?.thumbnail ??
-        information.coverImage ??
-        episode.img;
+      const img = foundImage?.img ?? information.coverImage ?? episode.img;
 
       // Construct episode title
       const title =
         episode.title && !episode.title.startsWith('EP')
           ? episode.title
-          : foundImage?.title ??
-            foundMetadata?.title ??
-            `Episode ${episode.number}`;
+          : foundImage?.title ?? `Episode ${episode.number}`;
 
       // Construct episode description
       const ordinal =
@@ -183,14 +177,13 @@ const findEpisodeData = (
       );
 
       // Construct episode information
-      const img =
-        foundMetadata?.thumbnail ?? information.coverImage ?? episode.img;
+      const img = information.coverImage ?? episode.img;
 
       // Construct episode title
       const title =
         episode.title && !episode.title.startsWith('EP')
           ? episode.title
-          : foundMetadata?.title ?? `Episode ${episode.number}`;
+          : `Episode ${episode.number}`;
 
       // Construct episode description
       const ordinal =
@@ -229,30 +222,20 @@ export const GET = async (request: NextRequest, { params }: Params) => {
           timeout: 2000,
         })
         .catch((e) => undefined);
-      const episodeMetadataPromise = axios
-        .get(
-          `${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/episodesMetadata/${params.id}`
-        )
-        .catch((e) => undefined);
       const informationPromise = axios
         .get(`${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/info/${params.id}`)
         .catch((e) => undefined);
 
-      const [episodeImagesData, episodeMetadataData, informationData] =
-        await Promise.all([
-          episodeImagesPromise,
-          episodeMetadataPromise,
-          informationPromise,
-        ]);
+      const [episodeImagesData, informationData] = await Promise.all([
+        episodeImagesPromise,
+        informationPromise,
+      ]);
 
       let episodeImages;
       let episodeMetadata;
       let information;
 
-      if (
-        episodeImagesData === undefined ||
-        episodeMetadataData === undefined
-      ) {
+      if (episodeImagesData === undefined) {
         episodeImages = undefined;
         episodeMetadata = undefined;
       }
@@ -261,9 +244,7 @@ export const GET = async (request: NextRequest, { params }: Params) => {
         episodeImagesData !== undefined
           ? (episodeImagesData.data as Promise<MetadataProviderData[]>)
           : new Promise((r) => r(undefined)),
-        episodeMetadataData !== undefined
-          ? (episodeMetadataData.data as Promise<AnimeData>)
-          : new Promise((r) => r(undefined)),
+        new Promise((r) => r(undefined)),
         informationData?.data,
       ]);
 
