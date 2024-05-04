@@ -1,62 +1,36 @@
 'use client';
 
+import React from 'react';
 import { Cards } from '@/components/Card';
+import { EpisodesList } from '@/components/EpisodesList';
 import { GenerateColoredElementBySeason } from '@/functions/jsxUtilityFunctions';
 import {
   numberToMonth,
   capitalizeFirstLetter,
+  IEpisode,
 } from '@/functions/utilityFunctions';
 import { ConsumetAnime } from '@/types/consumet';
 import { AnimeInfo } from '@/types/site';
 import { Accordion, AccordionItem } from '@nextui-org/react';
 
-export const Accordions = ({ info }: { info: AnimeInfo }) => {
+export const Accordions = ({
+  info,
+  episodes,
+  id,
+}: {
+  info: AnimeInfo;
+  episodes: IEpisode[];
+  id: string;
+}) => {
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set(['1']));
+
   return (
-    <Accordion>
-      <AccordionItem key="1" aria-label="Overview" title="Overview">
+    // @ts-ignore
+    <Accordion selectedKeys={selectedKeys} onSelectionChange={setSelectedKeys}>
+      <AccordionItem key="1" aria-label="Episodes" title="Episodes">
         <div>
-          <h1 className="text-xl">
-            Overview of{' '}
-            <strong className="font-bold">
-              {info?.title.english ?? info?.title.romaji}
-            </strong>
-          </h1>
-          <div dangerouslySetInnerHTML={{ __html: info?.description! }} />
-          <div className="mt-10">
-            <p>
-              <strong className="font-bold">Studios: </strong>
-              {info?.studios.join(', ')}
-            </p>
-            <p>
-              <strong className="font-bold">Country: </strong>
-              {info?.countryOfOrigin}
-            </p>
-            <p>
-              <strong className="font-bold">Rating: </strong>
-              {info?.averageRating! / 10}
-            </p>
-            <p>
-              <strong className="font-bold">Total Episodes: </strong>
-              {info?.totalEpisodes}
-            </p>
-            <p>
-              <strong className="font-bold">Release Date: </strong>
-              {info?.startDate.day} {numberToMonth(info?.startDate.month!)}{' '}
-              {info?.startDate.year}
-            </p>
-            <p>
-              <strong className="font-bold">Season: </strong>
-              {
-                <GenerateColoredElementBySeason
-                  season={capitalizeFirstLetter(info?.season!)}
-                />
-              }{' '}
-              {info?.year}
-            </p>
-            <p>
-              <strong className="font-bold">Duration Per Episode: </strong>
-              {info?.duration}
-            </p>
+          <div>
+            <EpisodesList episodes={episodes} id={id} />
           </div>
         </div>
       </AccordionItem>

@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Cards } from '@/components/Card';
 import { Characters } from '@/components/Characters';
 import { EpisodesList } from '@/components/EpisodesList';
@@ -23,8 +24,11 @@ export const AccordionComponent = ({
   id: string;
   episodes?: any;
 }) => {
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set(['1', '2']));
+
   return (
-    <Accordion>
+    // @ts-ignore
+    <Accordion selectedKeys={selectedKeys} onSelectionChange={setSelectedKeys}>
       <AccordionItem key="1" aria-label="Overview" title="Overview">
         <div>
           <h1 className="text-xl">
