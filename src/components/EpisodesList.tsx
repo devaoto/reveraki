@@ -91,7 +91,7 @@ export const EpisodesList = ({
                             alt={episode.title}
                             width={1500}
                             height={1500}
-                            className="object-cover min-h-[200px] sm:min-w-[100px] sm:max-w-[200px] md:min-w-[150px] md:max-w-[250px] lg:min-w-[200px] lg:max-w-[300px] xl:min-w-[250px] xl:max-w-[350px]"
+                            className="object-cover min-h-[200px] sm:min-w-[100px] sm:max-w-[200px] md:min-w-[150px] md:max-w-[150px] lg:min-w-[200px] lg:max-w-[200px] xl:min-w-[250px] xl:max-w-[250px]"
                           />
                         </div>
                         <div className="flex flex-col">

@@ -6,6 +6,7 @@ import { AnimeInfo, SiteEpisode } from '@/types/site';
 import { use } from 'react';
 import { Accordions } from './Accordions';
 import { Metadata, Viewport } from 'next';
+import { Image } from '@nextui-org/react';
 
 export async function generateMetadata({
   params,
@@ -67,8 +68,8 @@ export default function Watch({
 
   return (
     <>
-      <div className="flex flex-col md:flex-row justify-center">
-        <div className="md:mr-5 flex-grow max-w-4xl">
+      <div className="flex flex-col lg:flex-row justify-between ml-5 mr-5">
+        <div className="md:mr-5 flex-grow lg:min-w-[72rem] max-w-6xl">
           <div className="flex flex-col gap-2">
             <Player
               hls={
@@ -84,17 +85,24 @@ export default function Watch({
             <h1 className="text-xl font-bold">{foundEp?.title}</h1>
           </div>
         </div>
-        <div className="md:mt-10">
-          <h1 className="text-3xl font-bold mb-4">Episodes</h1>
-          <EpisodesList
-            episodes={episode!}
-            id={params.id}
-            current={Number(params.episode)}
+        <div className="flex flex-col items-center">
+          <Image
+            src={info?.bannerImage}
+            alt={info?.title.english ?? info?.title.romaji}
+            width={300}
+            height={500}
           />
+          <h1 className="text-xl text-center font-bold">
+            {info?.title.english ?? info?.title.romaji}
+          </h1>
+          <p className="max-w-[60%] line-clamp-4 text-center">
+            {info?.description}
+          </p>
         </div>
       </div>
+
       <div className="ml-5 mt-10">
-        <Accordions info={info!} />
+        <Accordions info={info!} episodes={episode!} id={params.id} />
       </div>
     </>
   );
