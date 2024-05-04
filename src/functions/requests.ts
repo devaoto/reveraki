@@ -538,3 +538,4 @@ export async function getCharacters(id: string) {
     console.error(error);
   }
 }
+

@@ -306,3 +306,43 @@ export async function getEpisodes(id: string) {
     console.error(error);
   }
 }
+
+export async function getSkipTimes(malId: string, episodeNumber: number) {
+  const skipResponse = await fetch(
+    `https://api.aniskip.com/v2/skip-times/${malId}/${Number(
+      episodeNumber
+    )}?types[]=ed&types[]=mixed-ed&types[]=mixed-op&types[]=op&types[]=recap&episodeLength=`
+  );
+
+  const skipData = await skipResponse.json();
+  const op =
+    skipData?.results?.find((item: any) => item.skipType === 'op') || null;
+  const ed =
+    skipData?.results?.find((item: any) => item.skipType === 'ed') || null;
+  const episodeLength =
+    skipData?.results?.find((item: any) => item.episodeLength)?.episodeLength ||
+    0;
+
+  const skiptime: any[] = [];
+
+  if (op?.interval) {
+    skiptime.push({
+      startTime: op.interval.startTime ?? 0,
+      endTime: op.interval.endTime ?? 0,
+      text: 'Opening',
+    });
+  }
+  if (ed?.interval) {
+    skiptime.push({
+      startTime: ed.interval.startTime ?? 0,
+      endTime: ed.interval.endTime ?? 0,
+      text: 'Ending',
+    });
+  } else {
+    skiptime.push({
+      startTime: op?.interval?.endTime ?? 0,
+      endTime: episodeLength,
+      text: '',
+    });
+  }
+}

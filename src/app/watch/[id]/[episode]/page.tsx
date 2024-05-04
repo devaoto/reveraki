@@ -13,6 +13,7 @@ import { Accordion, AccordionItem } from '@nextui-org/react';
 import { use } from 'react';
 import { ConsumetAnime } from '@/types/consumet';
 import { Accordions } from './Accordions';
+import { getSkipTimes } from '@/functions/clientRequests';
 
 export default function Watch({
   params,
@@ -37,9 +38,8 @@ export default function Watch({
 
   const foundEp = episode?.find((e) => e.number === Number(params.episode));
 
-  const source = use(getSources(params.id, foundEp?.id!)).sources.find(
-    (s: any) => s.quality === 'default'
-  ).url;
+  const sources = use(getSources(params.id, foundEp?.id!)).sources;
+  const skipTimes = use(getSkipTimes(info?.malId!, params.episode));
 
   return (
     <>
@@ -47,9 +47,15 @@ export default function Watch({
         <div className="md:mr-5 flex-grow max-w-4xl">
           <div className="flex flex-col gap-2">
             <Player
-              hls={source}
+              hls={
+                sources.find(
+                  (s: any) => s.quality === 'auto' || s.quality === 'default'
+                ).url
+              }
               title={foundEp?.title!}
               cover={foundEp?.img!}
+              idMal={info?.malId!}
+              currentEp={params.episode}
             />
             <h1 className="text-xl font-bold">{foundEp?.title}</h1>
           </div>

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { ReactElement } from 'react';
 
 import {
@@ -6,17 +7,26 @@ import {
   useCaptionOptions,
   type MenuPlacement,
   type TooltipPlacement,
+  useVideoQualityOptions,
+  useMediaState,
+  usePlaybackRateOptions,
 } from '@vidstack/react';
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   ClosedCaptionsIcon,
+  SettingsMenuIcon,
   RadioButtonIcon,
   RadioButtonSelectedIcon,
   SettingsIcon,
+  // EpisodesIcon,
+  SettingsSwitchIcon,
+  // PlaybackSpeedCircleIcon,
+  OdometerIcon,
 } from '@vidstack/react/icons';
 
 import { buttonClass, tooltipClass } from './buttons';
+import React, { useState } from 'react';
 
 export interface SettingsProps {
   placement: MenuPlacement;
@@ -24,10 +34,13 @@ export interface SettingsProps {
 }
 
 export const menuClass =
-  'animate-out fade-out slide-out-to-bottom-2 data-[open]:animate-in data-[open]:fade-in data-[open]:slide-in-from-bottom-4 flex h-[var(--menu-height)] max-h-[400px] min-w-[260px] flex-col overflow-y-auto overscroll-y-contain rounded-md border border-white/10 bg-black/95 p-2.5 font-sans text-[15px] font-medium outline-none backdrop-blur-sm transition-[height] duration-300 will-change-[height] data-[resizing]:overflow-hidden';
+  'animate-out fade-out slide-out-to-bottom-2 data-[open]:animate-in data-[open]:fade-in data-[open]:slide-in-from-bottom-4 flex h-[var(--menu-height)] max-h-[400px] min-w-[260px] flex-col overflow-y-auto overscroll-y-contain rounded-md border border-white/10 bg-black/95 p-2.5 font-sans text-[15px] font-medium outline-none backdrop-blur-sm transition-[height] duration-300 will-change-[height] data-[resizing]:overflow-hidden z-[40]';
 
 export const submenuClass =
-  'hidden w-full flex-col items-start justify-center outline-none data-[keyboard]:mt-[3px] data-[open]:inline-block';
+  'hidden w-full flex-col items-start justify-center outline-none data-[keyboard]:mt-[3px] data-[open]:inline-block z-[40]';
+
+export const contentMenuClass =
+  'flex cust-scroll h-[var(--menu-height)] max-h-[180px] lg:max-h-[400px] min-w-[260px] flex-col overflow-y-auto overscroll-y-contain rounded-md border border-white/10 bg-black p-2 font-sans text-[15px] font-medium outline-none backdrop-blur-sm transition-[height] duration-300 will-change-[height] data-[resizing]:overflow-hidden z-[40]';
 
 export function Settings({ placement, tooltipPlacement }: SettingsProps) {
   return (
@@ -43,7 +56,43 @@ export function Settings({ placement, tooltipPlacement }: SettingsProps) {
         </Tooltip.Content>
       </Tooltip.Root>
       <Menu.Content className={menuClass} placement={placement}>
-        <CaptionSubmenu />
+        <QualitySubmenu />
+      </Menu.Content>
+      <Menu.Content className={contentMenuClass} placement={placement}>
+        <AutoPlay />
+        <AutoSkip />
+        <SpeedSubmenu />
+        <QualitySubmenu />
+      </Menu.Content>
+    </Menu.Root>
+  );
+}
+
+function SpeedSubmenu() {
+  const options = usePlaybackRateOptions(),
+    hint =
+      options.selectedValue === '1' ? 'Normal' : options.selectedValue + 'x';
+  return (
+    <Menu.Root>
+      <SubmenuButton
+        label="Playback Rate"
+        hint={hint}
+        icon={OdometerIcon}
+        disabled={options.disabled}
+      >
+        Speed ({hint})
+      </SubmenuButton>
+      <Menu.Content className={submenuClass}>
+        <Menu.RadioGroup
+          className="w-full flex flex-col"
+          value={options.selectedValue}
+        >
+          {options.map(({ label, value, select }) => (
+            <Radio value={value} onSelect={select} key={value}>
+              {label}
+            </Radio>
+          ))}
+        </Menu.RadioGroup>
       </Menu.Content>
     </Menu.Root>
   );
@@ -58,7 +107,6 @@ function CaptionSubmenu() {
         label="Captions"
         hint={hint}
         disabled={options.disabled}
-        /**@ts-ignore */
         icon={ClosedCaptionsIcon}
       />
       <Menu.Content className={submenuClass}>
@@ -67,6 +115,233 @@ function CaptionSubmenu() {
           value={options.selectedValue}
         >
           {options.map(({ label, value, select }) => (
+            <Radio value={value} onSelect={select} key={value}>
+              {label}
+            </Radio>
+          ))}
+        </Menu.RadioGroup>
+      </Menu.Content>
+    </Menu.Root>
+  );
+}
+
+function AutoPlay() {
+  const [options, setOptions] = React.useState([
+    {
+      label: 'On',
+      value: 'on',
+      selected: false,
+    },
+    {
+      label: 'Off',
+      value: 'off',
+      selected: true,
+    },
+  ]);
+
+  const [showbtns, setShowbtns] = React.useState(false);
+
+  React.useEffect(() => {
+    const storedAutoPlay = localStorage.getItem('showbtns');
+    if (storedAutoPlay) {
+      setShowbtns(storedAutoPlay);
+    }
+  }, []);
+
+  return (
+    <Menu.Root>
+      <SubmenuButton
+        label="Show Buttons"
+        hint={
+          showbtns
+            ? options.find((option) => option.value === showbtns)?.value
+            : options.find((option) => option.selected)?.value
+        }
+        icon={SettingsSwitchIcon}
+      />
+      <Menu.Content className={submenuClass}>
+        <Menu.RadioGroup
+          className="w-full flex flex-col"
+          value={
+            showbtns
+              ? options.find((option) => option.value === showbtns)?.value
+              : options.find((option) => option.selected)?.value
+          }
+          onChange={(value) => {
+            setOptions((options) =>
+              options.map((option) =>
+                option.value === value
+                  ? { ...option, selected: true }
+                  : { ...option, selected: false }
+              )
+            );
+            setShowbtns(value);
+            localStorage.setItem('showbtns', value);
+          }}
+        >
+          {options.map((option) => (
+            <Radio key={option.value} value={option.value}>
+              {option.label}
+            </Radio>
+          ))}
+        </Menu.RadioGroup>
+      </Menu.Content>
+    </Menu.Root>
+  );
+}
+
+function AutoNext() {
+  const [options, setOptions] = React.useState([
+    {
+      label: 'On',
+      value: 'on',
+      selected: false,
+    },
+    {
+      label: 'Off',
+      value: 'off',
+      selected: true,
+    },
+  ]);
+
+  const [autoNext, setAutoNext] = React.useState(false);
+
+  React.useEffect(() => {
+    const storedAutoNext = localStorage.getItem('autoNext');
+    if (storedAutoNext) {
+      setAutoNext(storedAutoNext);
+    }
+  }, []);
+
+  return (
+    <Menu.Root>
+      <SubmenuButton
+        label="Autoplay Next"
+        hint={
+          autoNext
+            ? options.find((option) => option.value === autoNext)?.value
+            : options.find((option) => option.selected)?.value
+        }
+        icon={SettingsSwitchIcon}
+      />
+      <Menu.Content className={submenuClass}>
+        <Menu.RadioGroup
+          className="w-full flex flex-col"
+          value={
+            autoNext
+              ? options.find((option) => option.value === autoNext)?.value
+              : options.find((option) => option.selected)?.value
+          }
+          onChange={(value) => {
+            setOptions((options) =>
+              options.map((option) =>
+                option.value === value
+                  ? { ...option, selected: true }
+                  : { ...option, selected: false }
+              )
+            );
+            setAutoNext(value);
+            localStorage.setItem('autoNext', value);
+          }}
+        >
+          {options.map((option) => (
+            <Radio key={option.value} value={option.value}>
+              {option.label}
+            </Radio>
+          ))}
+        </Menu.RadioGroup>
+      </Menu.Content>
+    </Menu.Root>
+  );
+}
+
+function AutoSkip() {
+  const [options, setOptions] = React.useState([
+    {
+      label: 'On',
+      value: 'on',
+      selected: false,
+    },
+    {
+      label: 'Off',
+      value: 'off',
+      selected: true,
+    },
+  ]);
+
+  const [autoSkip, setAutoSkip] = React.useState(false);
+
+  React.useEffect(() => {
+    const storedAutoSkip = localStorage.getItem('autoSkip');
+    if (storedAutoSkip) {
+      setAutoSkip(storedAutoSkip);
+    }
+  }, []);
+
+  return (
+    <Menu.Root>
+      <SubmenuButton
+        label="AutoSkip"
+        hint={
+          autoSkip
+            ? options.find((option) => option.value === autoSkip)?.value
+            : options.find((option) => option.selected)?.value
+        }
+        icon={SettingsSwitchIcon}
+      />
+      <Menu.Content className={submenuClass}>
+        <Menu.RadioGroup
+          className="w-full flex flex-col"
+          value={
+            autoSkip
+              ? options.find((option) => option.value === autoSkip)?.value
+              : options.find((option) => option.selected)?.value
+          }
+          onChange={(value) => {
+            setOptions((options) =>
+              options.map((option) =>
+                option.value === value
+                  ? { ...option, selected: true }
+                  : { ...option, selected: false }
+              )
+            );
+            setAutoSkip(value);
+            localStorage.setItem('autoSkip', value);
+          }}
+        >
+          {options.map((option) => (
+            <Radio key={option.value} value={option.value}>
+              {option.label}
+            </Radio>
+          ))}
+        </Menu.RadioGroup>
+      </Menu.Content>
+    </Menu.Root>
+  );
+}
+
+function QualitySubmenu() {
+  const options = useVideoQualityOptions({ sort: 'descending' }),
+    autoQuality = useMediaState('autoQuality'),
+    currentQualityText = options.selectedQuality?.height + 'p' ?? '',
+    hint = !autoQuality ? currentQualityText : `Auto (${currentQualityText})`;
+
+  // console.log({ options });
+
+  return (
+    <Menu.Root>
+      <SubmenuButton
+        label="Quality"
+        hint={hint}
+        disabled={options.disabled}
+        icon={SettingsMenuIcon}
+      />
+      <Menu.Content className={submenuClass}>
+        <Menu.RadioGroup
+          className="w-full flex flex-col"
+          value={options.selectedValue}
+        >
+          {options.map(({ label, value, bitrateText, select }) => (
             <Radio value={value} onSelect={select} key={value}>
               {label}
             </Radio>
@@ -86,7 +361,10 @@ function Radio({ children, ...props }: RadioProps) {
       {...props}
     >
       <RadioButtonIcon className="h-4 w-4 text-white group-data-[checked]:hidden" />
-      <RadioButtonSelectedIcon className="text-media-brand hidden h-4 w-4 group-data-[checked]:block" />
+      <RadioButtonSelectedIcon
+        className="text-media-brand hidden h-4 w-4 group-data-[checked]:block"
+        type="radio-button-selected"
+      />
       <span className="ml-2">{children}</span>
     </Menu.Radio>
   );
@@ -107,12 +385,11 @@ function SubmenuButton({
 }: SubmenuButtonProps) {
   return (
     <Menu.Button
-      className="ring-media-focus parent left-0 z-10 flex w-full cursor-pointer select-none items-center justify-start rounded-sm bg-black/60 p-2.5 outline-none ring-inset data-[open]:sticky data-[open]:-top-2.5 data-[hocus]:bg-white/10 data-[focus]:ring-[3px] aria-disabled:hidden"
+      className="ring-media-focus data-[open]:bg-secondary parent left-0 z-10 flex w-full cursor-pointer select-none items-center justify-start rounded-sm p-2.5 outline-none ring-inset data-[open]:sticky data-[open]:-top-2.5 data-[hocus]:bg-white/10 data-[focus]:ring-[3px]"
       disabled={disabled}
     >
       <ChevronLeftIcon className="parent-data-[open]:block -ml-0.5 mr-1.5 hidden h-[18px] w-[18px]" />
       <div className="contents parent-data-[open]:hidden">
-        {/*@ts-ignore*/}
         <Icon className="w-5 h-5" />
       </div>
       <span className="ml-1.5 parent-data-[open]:ml-0">{label}</span>
