@@ -7,6 +7,33 @@ import { GenerateColoredElementByStatus } from '@/functions/jsxUtilityFunctions'
 import { FaPlayCircle } from 'react-icons/fa';
 import { AccordionComponent } from './Accordions';
 import Link from 'next/link';
+import { Metadata, Viewport } from 'next';
+
+export async function generateMetadata({
+  params,
+}: Readonly<{ params: { id: string } }>): Promise<Metadata> {
+  const info = (await getInfo(params.id)) as AnimeInfo;
+  return {
+    title: info
+      ? `${info?.title.english ? info.title.english : info.title.romaji}`
+      : 'Loading...',
+    description: info
+      ? `${info.description.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 180)}...`
+      : 'Loading...',
+    openGraph: {
+      images: info ? info.coverImage : 'No image',
+    },
+  };
+}
+
+export async function generateViewport({
+  params,
+}: Readonly<{ params: { id: string } }>): Promise<Viewport> {
+  const info = (await getInfo(params.id)) as AnimeInfo;
+  return {
+    themeColor: info.color ? info.color : '#000000',
+  };
+}
 
 interface Params {
   id: string;

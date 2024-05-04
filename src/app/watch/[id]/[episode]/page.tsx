@@ -1,19 +1,44 @@
 import { EpisodesList } from '@/components/EpisodesList';
 import Player from '@/components/Player/VidstackPlayer';
-import { GenerateColoredElementBySeason } from '@/functions/jsxUtilityFunctions';
 import { getInfo, getEpisodes, getSources } from '@/functions/requests';
-import {
-  IEpisode,
-  capitalizeFirstLetter,
-  numberToMonth,
-} from '@/functions/utilityFunctions';
-import { Cards } from '@/components/Card';
+import { IEpisode } from '@/functions/utilityFunctions';
 import { AnimeInfo, SiteEpisode } from '@/types/site';
-import { Accordion, AccordionItem } from '@nextui-org/react';
 import { use } from 'react';
-import { ConsumetAnime } from '@/types/consumet';
 import { Accordions } from './Accordions';
-import { getSkipTimes } from '@/functions/clientRequests';
+import { Metadata, Viewport } from 'next';
+
+export async function generateMetadata({
+  params,
+}: Readonly<{ params: { id: string; episode: number } }>): Promise<Metadata> {
+  const info = (await getInfo(params.id)) as AnimeInfo;
+  const episodes = (await getEpisodes(params.id)) as SiteEpisode[];
+  const episode = episodes.find((e) => e.number === Number(params.episode));
+
+  return {
+    title:
+      episode && !episode?.title.startsWith('Episode')
+        ? episode.title
+        : `Watch episode ${params.episode} of ${
+            info.title.english ?? info.title.romaji
+          }`,
+    description:
+      episode && !/^\d+(st|nd|rd|th)/.test(episode.description)
+        ? episode.description
+        : `${info.description.replace(/<\/?[^>]+(>|$)/g, '').slice(0, 180)}...`,
+    openGraph: {
+      images: info ? info.coverImage : 'No image',
+    },
+  };
+}
+
+export async function generateViewport({
+  params,
+}: Readonly<{ params: { id: string; episode: number } }>): Promise<Viewport> {
+  const info = (await getInfo(params.id)) as AnimeInfo;
+  return {
+    themeColor: info.color ? info.color : '#000000',
+  };
+}
 
 export default function Watch({
   params,
@@ -39,7 +64,6 @@ export default function Watch({
   const foundEp = episode?.find((e) => e.number === Number(params.episode));
 
   const sources = use(getSources(params.id, foundEp?.id!)).sources;
-  const skipTimes = use(getSkipTimes(info?.malId!, params.episode));
 
   return (
     <>
