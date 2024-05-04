@@ -7,6 +7,10 @@ import { use } from 'react';
 import { Accordions } from './Accordions';
 import { Metadata, Viewport } from 'next';
 import { Image } from '@nextui-org/react';
+import {
+  GenerateColoredElementBySeason,
+  GenerateColoredElementByStatus,
+} from '@/functions/jsxUtilityFunctions';
 
 export async function generateMetadata({
   params,
@@ -97,6 +101,11 @@ export default function Watch({
           </h1>
           <p className="max-w-[60%] line-clamp-4 text-center">
             {info?.description}
+          </p>
+          <p className="font-semibold">
+            {info?.type} |{' '}
+            {<GenerateColoredElementByStatus status={info?.status!} />} |{' '}
+            {<GenerateColoredElementBySeason season={info?.season!} />}
           </p>
         </div>
       </div>
