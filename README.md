@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Reveraki
 
-## Getting Started
+Minimalistic simple-looking Anime website created using Next.js 14 and Tailwind CSS.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Fast
+- Mobile/Tablet friendly
+- Easy to navigate
+- Trending/Popular/Seasonal anime
+- No Ads
+
+## Screenshots
+
+### Home Page
+
+![home](https://media.discordapp.net/attachments/1233827110171185313/1236138770407886899/image.png?ex=6636eb71&is=663599f1&hm=de3ad764ac67dd72ad23228ad25f6cca07b0afb56b194bf92c7eecdb5ee10bd8&=&format=webp&quality=lossless&width=1163&height=662)
+
+### Trending/Popular Page
+
+![popularOrTrending](https://media.discordapp.net/attachments/1233827110171185313/1236139073341489322/image.png?ex=6636ebb9&is=66359a39&hm=480dc41b686f3be0fe7d976434c799dc8c43b393735424568b9eb746fc5a95f0&=&format=webp&quality=lossless&width=687&height=395)
+
+### Information Page
+
+![info](https://media.discordapp.net/attachments/1233827110171185313/1236139305525837854/image.png?ex=6636ebf0&is=66359a70&hm=dbd7ec627c236b0c3ab952471fe6b47392b551c8fb5ce9cdbebdaf7230ffb417&=&format=webp&quality=lossless&width=687&height=391)
+
+### Watch Page
+
+![watch](https://media.discordapp.net/attachments/1233827110171185313/1236291819399286824/image.png?ex=663779fa&is=6636287a&hm=f4ce0ba6102aeef6743ca51307e117143f58a99bac9814587e3e947630e1ebda&=&format=webp&quality=lossless&width=1397&height=662)
+
+## Self-Host
+
+### Clone and install packages
+
+First, clone the repository:
+
+```sh
+git clone https://github.com/codeblitz97/reveraki.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then navigate to the folder and install packages with your preferred package manager.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+npm install # or yarn install or bun install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Editing environment variables
 
-## Learn More
+Rename the `.env.example` file to `.env.local` and fill in these:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+REDIS_URI = ""  # Your Redis URI. Not required. Remove this if you don't need Redis for caching. It will use node-cache by default.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+CONSUMET_API = ""  # Consumet API. Host from: https://github.com/consumet/api.consumet.org/
+NEXT_PUBLIC_DOMAIN = "http://localhost:3000"  # Your website URL (required for info and episode), replace it with your website URL
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Starting in development mode
 
-## Deploy on Vercel
+To start the application in development mode, run any of these commands:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```sh
+bun dev
+# or yarn
+yarn dev
+# or npm
+npm dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Note
+
+If you like this project, consider giving it a star <3
