@@ -22,7 +22,7 @@ export const Accordions = ({
   episodes: IEpisode[];
   id: string;
 }) => {
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(['1']));
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set(['1', '2']));
 
   return (
     // @ts-ignore
