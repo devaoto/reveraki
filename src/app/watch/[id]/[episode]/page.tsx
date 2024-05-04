@@ -56,7 +56,11 @@ export default function Watch({
         </div>
         <div className="md:mt-10">
           <h1 className="text-3xl font-bold mb-4">Episodes</h1>
-          <EpisodesList episodes={episode!} id={params.id} />
+          <EpisodesList
+            episodes={episode!}
+            id={params.id}
+            current={Number(params.episode)}
+          />
         </div>
       </div>
       <div className="ml-5 mt-10">
