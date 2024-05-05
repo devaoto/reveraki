@@ -73,7 +73,7 @@ export default function Watch({
   return (
     <>
       <div className="flex flex-col lg:flex-row justify-between ml-5 mr-5">
-        <div className="md:mr-5 flex-grow lg:min-w-[72rem] max-w-6xl">
+        <div className="md:mr-5 flex-grow min-w-full lg:min-w-[72rem] max-w-6xl">
           <div className="flex flex-col gap-2">
             <Player
               hls={
