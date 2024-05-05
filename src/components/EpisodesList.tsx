@@ -62,25 +62,27 @@ export const EpisodesList = ({
         {layoutOption === 'grid' && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
             {episodes.map((episode) => (
-              <Link key={episode.id} href={`/watch/${id}/${episode.number}`}>
-                <motion.div
-                  className="cursor-pointer bg-base-200"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="relative">
-                    <Image
-                      src={episode.img!}
-                      alt={episode.title}
-                      width={1500}
-                      height={1500}
-                      className="object-cover lg:min-h-[150px] min-h-[50px] min-w-[100px] sm:max-w-[200px] md:min-w-[150px] md:max-w-[150px] lg:min-w-[200px] lg:max-w-[200px] xl:min-w-[250px] xl:max-w-[250px]"
-                    />
-                    <div className="absolute bg-black opacity-65 text-white top-0 left-0 z-20">
-                      EP {episode.number}
+              <Tooltip key={episode.id} content={episode.title}>
+                <Link href={`/watch/${id}/${episode.number}`}>
+                  <motion.div
+                    className="cursor-pointer bg-base-200"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div className="relative">
+                      <Image
+                        src={episode.img!}
+                        alt={episode.title}
+                        width={1500}
+                        height={1500}
+                        className="object-cover lg:min-h-[150px] min-h-[50px] min-w-[100px] sm:max-w-[200px] md:min-w-[150px] md:max-w-[150px] lg:min-w-[200px] lg:max-w-[200px] xl:min-w-[250px] xl:max-w-[250px]"
+                      />
+                      <div className="absolute bg-black opacity-65 text-white top-0 left-0 z-20">
+                        EP {episode.number}
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              </Link>
+                  </motion.div>
+                </Link>
+              </Tooltip>
             ))}
           </div>
         )}
