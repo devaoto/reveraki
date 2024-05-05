@@ -1,7 +1,7 @@
 'use client';
 
 import { getTrendingAnime } from '@/functions/clientRequests';
-import { ConsumetAnimePage, ExtendedAnimePage } from '@/types/consumet';
+import { ExtendedAnimePage } from '@/types/consumet';
 import { useEffect, useState } from 'react';
 import { Card } from './Card';
 import { Pagination } from '@nextui-org/react';
