@@ -46,7 +46,7 @@ function Footer() {
           </div>
         </div>
       </footer>
-      <div className="bg-tersier mt-2 border-t border-white/5"></div>
+      <div className="mt-2 border-t border-white/5 bg-gray-600"></div>
       <div className="mx-auto w-full py-3 text-[0.7rem] text-[#ffffffb2] lg:flex lg:max-w-[83%] lg:items-center lg:justify-between lg:text-[0.8rem]">
         <span className="ms-5 sm:text-center lg:ms-0">
           <span className="select-none">©</span> {year}{' '}
