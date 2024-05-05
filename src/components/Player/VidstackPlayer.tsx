@@ -90,7 +90,7 @@ export default function Player({
 
   function onProviderChange(
     provider: MediaProviderAdapter | null,
-    nativeEvent: MediaProviderChangeEvent
+    nativeEvent: MediaProviderChangeEvent,
   ) {
     // We can configure provider's here.
     if (isHLSProvider(provider)) {
@@ -108,14 +108,14 @@ export default function Player({
         url?: string;
         lang?: string;
       }[],
-      s
+      s,
     ) => {
       if (!unique.some((item) => item.lang === s.lang)) {
         unique.push(s);
       }
       return unique;
     },
-    []
+    [],
   );
 
   useEffect(() => {
@@ -123,8 +123,8 @@ export default function Player({
       const skipR = await (
         await fetch(
           `https://api.aniskip.com/v2/skip-times/${idMal}/${Number(
-            currentEp
-          )}?types[]=ed&types[]=mixed-ed&types[]=mixed-op&types[]=op&types[]=recap&episodeLength=`
+            currentEp,
+          )}?types[]=ed&types[]=mixed-ed&types[]=mixed-op&types[]=op&types[]=recap&episodeLength=`,
         )
       ).json();
 
@@ -180,8 +180,8 @@ export default function Player({
           new window.VTTCue(
             Number(cue.startTime),
             Number(cue.endTime),
-            cue.text
-          )
+            cue.text,
+          ),
         );
       }
       player.current?.textTracks.add(track);
@@ -216,12 +216,12 @@ export default function Player({
         setopbutton(
           opButtonText === 'Opening' &&
             currentTime > opStart &&
-            currentTime < opEnd
+            currentTime < opEnd,
         );
         setedbutton(
           edButtonText === 'Ending' &&
             currentTime > epStart &&
-            currentTime < epEnd
+            currentTime < epEnd,
         );
 
         const autoSkip = localStorage.getItem('autoSkip');
@@ -335,7 +335,7 @@ export default function Player({
           {showbutton && opbutton && (
             <button
               onClick={handleop}
-              className="absolute bottom-[70px] sm:bottom-[83px] left-4 z-[40] bg-black bg-opacity-80 text-white py-2 px-3 rounded-lg font-medium text-base cursor-pointer text-left font-inter flex items-center animate-show border border-solid border-white border-opacity-10 gap-2"
+              className="font-inter animate-show absolute bottom-[70px] left-4 z-[40] flex cursor-pointer items-center gap-2 rounded-lg border border-solid border-white border-opacity-10 bg-black bg-opacity-80 px-3 py-2 text-left text-base font-medium text-white sm:bottom-[83px]"
             >
               Skip Opening
             </button>
@@ -343,7 +343,7 @@ export default function Player({
           {showbutton && edbutton && (
             <button
               onClick={handleed}
-              className="absolute bottom-[70px] sm:bottom-[83px] left-4 z-[40] bg-black bg-opacity-80 text-white py-2 px-3 rounded-lg font-medium text-base cursor-pointer text-left font-inter flex items-center animate-show border border-solid border-white border-opacity-10 gap-2"
+              className="font-inter animate-show absolute bottom-[70px] left-4 z-[40] flex cursor-pointer items-center gap-2 rounded-lg border border-solid border-white border-opacity-10 bg-black bg-opacity-80 px-3 py-2 text-left text-base font-medium text-white sm:bottom-[83px]"
             >
               Skip Ending
             </button>

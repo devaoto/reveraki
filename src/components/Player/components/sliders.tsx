@@ -3,17 +3,17 @@ import { TimeSlider, VolumeSlider } from '@vidstack/react';
 export function Volume() {
   return (
     <VolumeSlider.Root className="volume-slider group relative mx-[7.5px] inline-flex h-10 w-full max-w-[80px] cursor-pointer touch-none select-none items-center outline-none aria-hidden:hidden">
-      <VolumeSlider.Track className="relative ring-media-focus z-0 h-[5px] w-full rounded-sm bg-white/30 group-data-[focus]:ring-[3px]">
-        <VolumeSlider.TrackFill className="bg-media-brand absolute h-full w-[var(--slider-fill)] bg-blue-200 rounded-sm will-change-[width]" />
+      <VolumeSlider.Track className="ring-media-focus relative z-0 h-[5px] w-full rounded-sm bg-white/30 group-data-[focus]:ring-[3px]">
+        <VolumeSlider.TrackFill className="bg-media-brand absolute h-full w-[var(--slider-fill)] rounded-sm bg-blue-200 will-change-[width]" />
       </VolumeSlider.Track>
 
       <VolumeSlider.Preview
-        className="flex flex-col items-center opacity-0 transition-opacity duration-200 data-[visible]:opacity-100 pointer-events-none"
+        className="pointer-events-none flex flex-col items-center opacity-0 transition-opacity duration-200 data-[visible]:opacity-100"
         noClamp
       >
         <VolumeSlider.Value className="rounded-sm bg-black px-2 py-px text-[13px] font-medium" />
       </VolumeSlider.Preview>
-      <VolumeSlider.Thumb className="absolute left-[var(--slider-fill)] top-1/2 z-20 h-[15px] w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#cacaca] bg-white opacity-0 ring-white/40 transition-opacity group-data-[active]:opacity-100 group-data-[dragging]:ring-4 will-change-[left]" />
+      <VolumeSlider.Thumb className="absolute left-[var(--slider-fill)] top-1/2 z-20 h-[15px] w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#cacaca] bg-white opacity-0 ring-white/40 transition-opacity will-change-[left] group-data-[active]:opacity-100 group-data-[dragging]:ring-4" />
     </VolumeSlider.Root>
   );
 }
@@ -34,8 +34,8 @@ export function Time({ thumbnails }: TimeSliderProps) {
               key={cue.startTime}
               ref={forwardRef}
             >
-              <TimeSlider.Track className="relative ring-media-focus z-0 h-[5px] w-full rounded-sm bg-white/30 group-data-[focus]:ring-[3px]">
-                <TimeSlider.TrackFill className="bg-media-brand absolute h-full w-[var(--chapter-fill)] bg-blue-500 rounded-sm will-change-[width]" />
+              <TimeSlider.Track className="ring-media-focus relative z-0 h-[5px] w-full rounded-sm bg-white/30 group-data-[focus]:ring-[3px]">
+                <TimeSlider.TrackFill className="bg-media-brand absolute h-full w-[var(--chapter-fill)] rounded-sm bg-blue-500 will-change-[width]" />
                 <TimeSlider.Progress className="absolute z-10 h-full w-[var(--chapter-progress)] rounded-sm bg-white/50 will-change-[width]" />
               </TimeSlider.Track>
             </div>
@@ -43,9 +43,9 @@ export function Time({ thumbnails }: TimeSliderProps) {
         }
       </TimeSlider.Chapters>
 
-      <TimeSlider.Thumb className="absolute left-[var(--slider-fill)] top-1/2 z-20 h-[15px] w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#cacaca] bg-white opacity-0 ring-white/40 transition-opacity group-data-[active]:opacity-100 group-data-[dragging]:ring-4 will-change-[left]" />
+      <TimeSlider.Thumb className="absolute left-[var(--slider-fill)] top-1/2 z-20 h-[15px] w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#cacaca] bg-white opacity-0 ring-white/40 transition-opacity will-change-[left] group-data-[active]:opacity-100 group-data-[dragging]:ring-4" />
 
-      <TimeSlider.Preview className="flex flex-col items-center opacity-0 transition-opacity duration-200 data-[visible]:opacity-100 pointer-events-none">
+      <TimeSlider.Preview className="pointer-events-none flex flex-col items-center opacity-0 transition-opacity duration-200 data-[visible]:opacity-100">
         {thumbnails ? (
           <TimeSlider.Thumbnail.Root
             src={thumbnails}

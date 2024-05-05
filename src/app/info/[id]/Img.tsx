@@ -9,7 +9,7 @@ export const InfoImg = ({ info }: { info: any }) => {
           alt={info.color}
           width={1920}
           height={900}
-          className="object-cover min-h-[620px]"
+          className="min-h-[620px] object-cover"
         />
       ) : (
         <Image
@@ -17,7 +17,7 @@ export const InfoImg = ({ info }: { info: any }) => {
           alt={info.color ?? info.title.english ?? info.title.romaji}
           width={1920}
           height={900}
-          className="object-cover min-h-[620px] min-w-[1920px] max-h-[620px]"
+          className="max-h-[620px] min-h-[620px] min-w-[1920px] object-cover"
         />
       )}
     </div>

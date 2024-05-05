@@ -22,7 +22,7 @@ export default function Home() {
       getTrendingAnime() as Promise<ConsumetAnimePage>,
       getPopularAnime() as Promise<ConsumetAnimePage>,
       getSeasonalAnime() as Promise<ConsumetAnimePage>,
-    ])
+    ]),
   );
   const currentSeason = getCurrentSeason();
 

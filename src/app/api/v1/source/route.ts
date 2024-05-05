@@ -4,7 +4,7 @@ import { NextResponse, NextRequest } from 'next/server';
 async function consumetEpisode(id: string, provider = 'gogoanime') {
   try {
     const { data } = await axios.get(
-      `${process.env.CONSUMET_API}/meta/anilist/watch/${id}?provider=${provider}`
+      `${process.env.CONSUMET_API}/meta/anilist/watch/${id}?provider=${provider}`,
     );
     return data;
   } catch (error) {
@@ -18,13 +18,13 @@ async function anifyEpisode(
   episodeid: string,
   epnum: string,
   id: string,
-  subtype: string
+  subtype: string,
 ) {
   try {
     const { data } = await axios.get(
       `https://api.anify.tv/sources?providerId=${provider}&watchId=${encodeURIComponent(
-        episodeid
-      )}&episodeNumber=${epnum}&id=${id}&subType=${subtype}`
+        episodeid,
+      )}&episodeNumber=${epnum}&id=${id}&subType=${subtype}`,
     );
     return data;
   } catch (error) {

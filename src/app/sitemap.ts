@@ -10,7 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModefied: new Date(),
       changeFrequency: 'daily',
       priority: 1,
-    })
+    }),
   );
 
   return [

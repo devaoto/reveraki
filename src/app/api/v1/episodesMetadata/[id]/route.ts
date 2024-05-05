@@ -9,7 +9,7 @@ type Params = {
 
 export const GET = async (
   request: NextRequest,
-  { params }: Readonly<Params>
+  { params }: Readonly<Params>,
 ) => {
   try {
     const cachedData = await cache.get(`em1:${params.id}`);
@@ -61,7 +61,7 @@ export const GET = async (
           title: se.title.split('-')[1].trim(),
           fullTitle: se.title,
           thumbnail: se.thumbnail,
-        })
+        }),
       ),
       title: {
         english: responseData.data.Media.title.english,
@@ -73,7 +73,7 @@ export const GET = async (
     await cache.set(
       `em1:${params.id}`,
       JSON.stringify(formattedRes),
-      5 * 60 * 60
+      5 * 60 * 60,
     );
 
     return NextResponse.json(formattedRes);
@@ -84,7 +84,7 @@ export const GET = async (
         message: 'Internal Server Error',
         status: 500,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };

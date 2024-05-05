@@ -45,7 +45,7 @@ const Info: React.FC<{ params: Params }> = ({ params }) => {
   const charactersPromise = getCharacters(params.id) as Promise<CharacterRes>;
 
   const [info, episodes, characters] = use(
-    Promise.all([infoPromise, episodesPromise, charactersPromise])
+    Promise.all([infoPromise, episodesPromise, charactersPromise]),
   );
 
   return (
@@ -53,8 +53,8 @@ const Info: React.FC<{ params: Params }> = ({ params }) => {
       <div className="relative">
         <InfoImg info={info} />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#080006]">
-          <div className="ml-5 flex flex-col h-full justify-end">
-            <div className="flex flex-col gap-4 lg:flex-row items-center">
+          <div className="ml-5 flex h-full flex-col justify-end">
+            <div className="flex flex-col items-center gap-4 lg:flex-row">
               <Image
                 src={info.bannerImage}
                 alt={info.title.english ?? info.title.romaji}
@@ -66,21 +66,21 @@ const Info: React.FC<{ params: Params }> = ({ params }) => {
                   <div>
                     <h1
                       style={{ color: info.color ?? 'pink' }}
-                      className="text-center md:text-left lg:text-left text-3xl font-bold"
+                      className="text-center text-3xl font-bold md:text-left lg:text-left"
                     >
                       {info.title.english}
                     </h1>
-                    <h2 className="text-center md:text-left lg:text-left text-2xl font-semibold">
+                    <h2 className="text-center text-2xl font-semibold md:text-left lg:text-left">
                       {info.title.romaji}
                     </h2>
-                    <div className="text-xl font-semibold text-center md:text-left lg:text-left">
+                    <div className="text-center text-xl font-semibold md:text-left lg:text-left">
                       {
                         <GenerateColoredElementByStatus
                           status={info.status ?? 'NOT_YET_RELEASED'}
                         />
                       }
                     </div>
-                    <div className="flex flex-wrap gap-2 justify-center md:justify-start lg:justify-start mb-4">
+                    <div className="mb-4 flex flex-wrap justify-center gap-2 md:justify-start lg:justify-start">
                       {info.genres.map((g) => {
                         return (
                           <Chip key={g} color={'primary'}>
@@ -127,7 +127,7 @@ const Info: React.FC<{ params: Params }> = ({ params }) => {
                                 episodes?.length! > 0 ? 'success' : 'secondary'
                               }
                             >
-                              <div className="flex gap-1 items-center">
+                              <div className="flex items-center gap-1">
                                 <FaPlayCircle /> <span>Watch Now</span>
                               </div>
                             </Button>
@@ -145,7 +145,7 @@ const Info: React.FC<{ params: Params }> = ({ params }) => {
                             className="max-w-[120px]"
                             color={'danger'}
                           >
-                            <div className="flex gap-1 items-center">
+                            <div className="flex items-center gap-1">
                               <span>Add to list</span>
                             </div>
                           </Button>
@@ -159,7 +159,7 @@ const Info: React.FC<{ params: Params }> = ({ params }) => {
           </div>
         </div>
       </div>
-      <div className="mt-20 ml-5">
+      <div className="ml-5 mt-20">
         {episodes?.length! > 0 ? (
           <AccordionComponent
             info={info}

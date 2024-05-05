@@ -8,7 +8,7 @@ type VideoProgress = {
 
 type UseVideoProgressSave = () => [
   (id: string) => any,
-  (id: string, data: any) => void
+  (id: string, data: any) => void,
 ];
 
 const useVideoProgressSave: UseVideoProgressSave = () => {

@@ -137,7 +137,7 @@ export const getTrendingAnime = async (page = 1, perPage = 24) => {
   } catch (error) {
     try {
       response = await fetch(
-        `${process.env.NEXT_PUBLIC_CONSUMET_API}/trending?perPage=${perPage}&page=${page}`
+        `${process.env.NEXT_PUBLIC_CONSUMET_API}/trending?perPage=${perPage}&page=${page}`,
       );
       return (await response.json()) as ExtendedAnimePage;
     } catch (error) {
@@ -278,7 +278,7 @@ export const getPopularAnime = async (page = 1, perPage = 24) => {
   } catch (error) {
     try {
       response = await fetch(
-        `${process.env.NEXT_PUBLIC_CONSUMET_API}/popular?perPage=${perPage}&page=${page}`
+        `${process.env.NEXT_PUBLIC_CONSUMET_API}/popular?perPage=${perPage}&page=${page}`,
       );
       return (await response.json()) as ExtendedAnimePage;
     } catch (error) {
@@ -290,13 +290,13 @@ export const getPopularAnime = async (page = 1, perPage = 24) => {
 export async function getEpisodes(id: string) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/episodes/${id}`
+      `${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/episodes/${id}`,
     );
     let episodes: SiteEpisode[] | undefined;
 
     try {
       episodes = ((await response.json()) as SiteAnime[]).find(
-        (p) => p.providerId === 'anizone'
+        (p) => p.providerId === 'anizone',
       )?.episodes;
     } catch (error) {
       episodes = [];
@@ -310,8 +310,8 @@ export async function getEpisodes(id: string) {
 export async function getSkipTimes(malId: string, episodeNumber: number) {
   const skipResponse = await fetch(
     `https://api.aniskip.com/v2/skip-times/${malId}/${Number(
-      episodeNumber
-    )}?types[]=ed&types[]=mixed-ed&types[]=mixed-op&types[]=op&types[]=recap&episodeLength=`
+      episodeNumber,
+    )}?types[]=ed&types[]=mixed-ed&types[]=mixed-op&types[]=op&types[]=recap&episodeLength=`,
   );
 
   const skipData = await skipResponse.json();

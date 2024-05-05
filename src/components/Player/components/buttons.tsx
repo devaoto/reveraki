@@ -40,9 +40,9 @@ export function Play({ tooltipPlacement }: MediaButtonProps) {
       <Tooltip.Trigger asChild>
         <PlayButton className={buttonClass}>
           {isPaused ? (
-            <PlayIcon className="w-8 h-8" />
+            <PlayIcon className="h-8 w-8" />
           ) : (
-            <PauseIcon className="w-8 h-8" />
+            <PauseIcon className="h-8 w-8" />
           )}
         </PlayButton>
       </Tooltip.Trigger>
@@ -61,11 +61,11 @@ export function Mute({ tooltipPlacement }: MediaButtonProps) {
       <Tooltip.Trigger asChild>
         <MuteButton className={buttonClass}>
           {isMuted || volume == 0 ? (
-            <MuteIcon className="w-8 h-8" />
+            <MuteIcon className="h-8 w-8" />
           ) : volume < 0.5 ? (
-            <VolumeLowIcon className="w-8 h-8" />
+            <VolumeLowIcon className="h-8 w-8" />
           ) : (
-            <VolumeHighIcon className="w-8 h-8" />
+            <VolumeHighIcon className="h-8 w-8" />
           )}
         </MuteButton>
       </Tooltip.Trigger>
@@ -84,9 +84,9 @@ export function Caption({ tooltipPlacement }: MediaButtonProps) {
       <Tooltip.Trigger asChild>
         <CaptionButton className={buttonClass}>
           {isOn ? (
-            <ClosedCaptionsOnIcon className="w-8 h-8" />
+            <ClosedCaptionsOnIcon className="h-8 w-8" />
           ) : (
-            <ClosedCaptionsIcon className="w-8 h-8" />
+            <ClosedCaptionsIcon className="h-8 w-8" />
           )}
         </CaptionButton>
       </Tooltip.Trigger>
@@ -104,9 +104,9 @@ export function PIP({ tooltipPlacement }: MediaButtonProps) {
       <Tooltip.Trigger asChild>
         <PIPButton className={buttonClass}>
           {isActive ? (
-            <PictureInPictureExitIcon className="w-8 h-8" />
+            <PictureInPictureExitIcon className="h-8 w-8" />
           ) : (
-            <PictureInPictureIcon className="w-8 h-8" />
+            <PictureInPictureIcon className="h-8 w-8" />
           )}
         </PIPButton>
       </Tooltip.Trigger>
@@ -124,9 +124,9 @@ export function Fullscreen({ tooltipPlacement }: MediaButtonProps) {
       <Tooltip.Trigger asChild>
         <FullscreenButton className={buttonClass}>
           {isActive ? (
-            <FullscreenExitIcon className="w-8 h-8" />
+            <FullscreenExitIcon className="h-8 w-8" />
           ) : (
-            <FullscreenIcon className="w-8 h-8" />
+            <FullscreenIcon className="h-8 w-8" />
           )}
         </FullscreenButton>
       </Tooltip.Trigger>

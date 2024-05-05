@@ -97,7 +97,7 @@ const findEpisodeData = (
   episodes: Episode[],
   information: any,
   metadata?: AnimeData,
-  episodeImages?: MetadataProviderData[] | undefined
+  episodeImages?: MetadataProviderData[] | undefined,
 ): any => {
   try {
     return episodes.map((episode) => {
@@ -106,7 +106,7 @@ const findEpisodeData = (
       try {
         foundImage = episodeImages
           ?.find(
-            (imageData) => imageData.providerId === 'tvdb' || episodeImages[0]
+            (imageData) => imageData.providerId === 'tvdb' || episodeImages[0],
           )
           ?.data.find((data) => episode.number === data.number);
       } catch (error) {
@@ -117,7 +117,7 @@ const findEpisodeData = (
       // Find the metadata for the episode
       if (metadata) {
         foundMetadata = metadata.metadatas.find(
-          (meta) => meta.number === episode.number
+          (meta) => meta.number === episode.number,
         );
       } else {
         foundMetadata = {
@@ -146,10 +146,10 @@ const findEpisodeData = (
         episode.number === 1
           ? '1st'
           : episode.number === 2
-          ? '2nd'
-          : episode.number === 3
-          ? '3rd'
-          : `${episode.number}th`;
+            ? '2nd'
+            : episode.number === 3
+              ? '3rd'
+              : `${episode.number}th`;
       const description =
         episode.description ??
         foundImage?.description ??
@@ -173,7 +173,7 @@ const findEpisodeData = (
     return episodes.map((episode) => {
       // Find the metadata for the episode
       const foundMetadata = metadata?.metadatas.find(
-        (meta) => meta.number === episode.number
+        (meta) => meta.number === episode.number,
       );
 
       // Construct episode information
@@ -190,10 +190,10 @@ const findEpisodeData = (
         episode.number === 1
           ? '1st'
           : episode.number === 2
-          ? '2nd'
-          : episode.number === 3
-          ? '3rd'
-          : `${episode.number}th`;
+            ? '2nd'
+            : episode.number === 3
+              ? '3rd'
+              : `${episode.number}th`;
       const description =
         episode.description ??
         `${ordinal} Episode of ${
@@ -251,7 +251,7 @@ export const GET = async (request: NextRequest, { params }: Params) => {
       try {
         const anifyEpisodes = (
           await axios.get(
-            `https://api.anify.tv/info/${params.id}?fields=[episodes]`
+            `https://api.anify.tv/info/${params.id}?fields=[episodes]`,
           )
         ).data as EpisodesResponse;
 
@@ -263,7 +263,7 @@ export const GET = async (request: NextRequest, { params }: Params) => {
               anifyEpisode.episodes,
               information,
               episodeMetadata as AnimeData | undefined,
-              episodeImages as MetadataProviderData[] | undefined
+              episodeImages as MetadataProviderData[] | undefined,
             ),
             providerId:
               anifyEpisode.providerId === 'zoro' ? 'anirise' : 'anizone',
@@ -280,20 +280,20 @@ export const GET = async (request: NextRequest, { params }: Params) => {
         try {
           consumetEpisodes = (
             await axios.get(
-              `${process.env.CONSUMET_API}/meta/anilist/episodes/${params.id}`
+              `${process.env.CONSUMET_API}/meta/anilist/episodes/${params.id}`,
             )
           ).data;
         } catch (consumetError) {
           console.error(
             'Error fetching episodes from consumet API:',
-            consumetError
+            consumetError,
           );
           return NextResponse.json(
             {
               message: 'Internal Server Error',
               status: 500,
             },
-            { status: 500 }
+            { status: 500 },
           );
         }
 
@@ -314,7 +314,7 @@ export const GET = async (request: NextRequest, { params }: Params) => {
                 convertedEpisodes as Episode[],
                 information,
                 episodeMetadata as AnimeData | undefined,
-                episodeImages as MetadataProviderData[] | undefined
+                episodeImages as MetadataProviderData[] | undefined,
               ),
               providerId: 'anizone',
             },
@@ -340,7 +340,7 @@ export const GET = async (request: NextRequest, { params }: Params) => {
         message: 'Internal Server Error',
         status: 500,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };

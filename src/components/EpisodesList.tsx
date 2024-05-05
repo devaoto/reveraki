@@ -35,7 +35,7 @@ export const EpisodesList = ({
   };
   return (
     <div className="gap-2 overflow-y-auto overflow-x-hidden">
-      <div className="flex justify-end gap-2 mb-2">
+      <div className="mb-2 flex justify-end gap-2">
         <Button
           color="primary"
           variant={layoutOption === 'grid' ? 'solid' : 'ghost'}
@@ -60,12 +60,12 @@ export const EpisodesList = ({
       </div>
       <div className="gap-2 overflow-y-auto overflow-x-hidden">
         {layoutOption === 'grid' && (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
             {episodes.map((episode) => (
               <Tooltip key={episode.id} content={episode.title}>
                 <Link href={`/watch/${id}/${episode.number}`}>
                   <motion.div
-                    className="cursor-pointer bg-base-200"
+                    className="bg-base-200 cursor-pointer"
                     whileHover={{ scale: 1.02 }}
                   >
                     <div className="relative">
@@ -74,9 +74,9 @@ export const EpisodesList = ({
                         alt={episode.title}
                         width={1500}
                         height={1500}
-                        className="object-cover lg:min-h-[150px] min-h-[50px] min-w-[100px] sm:max-w-[200px] md:min-w-[150px] md:max-w-[150px] lg:min-w-[200px] lg:max-w-[200px] xl:min-w-[250px] xl:max-w-[250px]"
+                        className="min-h-[50px] min-w-[100px] object-cover sm:max-w-[200px] md:min-w-[150px] md:max-w-[150px] lg:min-h-[150px] lg:min-w-[200px] lg:max-w-[200px] xl:min-w-[250px] xl:max-w-[250px]"
                       />
-                      <div className="absolute bg-black opacity-65 text-white top-0 left-0 z-20">
+                      <div className="absolute left-0 top-0 z-20 bg-black text-white opacity-65">
                         EP {episode.number}
                       </div>
                     </div>
@@ -87,11 +87,11 @@ export const EpisodesList = ({
           </div>
         )}
         {layoutOption === 'flex-col' && (
-          <div className="max-h-96 flex flex-col gap-4">
+          <div className="flex max-h-96 flex-col gap-4">
             {episodes.map((episode) => (
               <Link key={episode.id} href={`/watch/${id}/${episode.number}`}>
                 <motion.div
-                  className="cursor-pointer bg-base-200"
+                  className="bg-base-200 cursor-pointer"
                   whileHover={{ scale: 1.02 }}
                 >
                   <motion.div
@@ -108,7 +108,7 @@ export const EpisodesList = ({
                             alt={episode.title}
                             width={1500}
                             height={1500}
-                            className="object-cover min-h-[200px] sm:min-h-[50px] sm:min-w-[100px] sm:max-w-[200px] md:min-w-[150px] md:max-w-[150px] lg:min-w-[200px] lg:max-w-[200px] xl:min-w-[250px] xl:max-w-[250px]"
+                            className="min-h-[200px] object-cover sm:min-h-[50px] sm:min-w-[100px] sm:max-w-[200px] md:min-w-[150px] md:max-w-[150px] lg:min-w-[200px] lg:max-w-[200px] xl:min-w-[250px] xl:max-w-[250px]"
                           />
                         </div>
                         <div className="flex flex-col">

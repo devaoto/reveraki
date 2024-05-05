@@ -84,7 +84,7 @@ function SpeedSubmenu() {
       </SubmenuButton>
       <Menu.Content className={submenuClass}>
         <Menu.RadioGroup
-          className="w-full flex flex-col"
+          className="flex w-full flex-col"
           value={options.selectedValue}
         >
           {options.map(({ label, value, select }) => (
@@ -111,7 +111,7 @@ function CaptionSubmenu() {
       />
       <Menu.Content className={submenuClass}>
         <Menu.RadioGroup
-          className="w-full flex flex-col"
+          className="flex w-full flex-col"
           value={options.selectedValue}
         >
           {options.map(({ label, value, select }) => (
@@ -161,7 +161,7 @@ function AutoPlay() {
       />
       <Menu.Content className={submenuClass}>
         <Menu.RadioGroup
-          className="w-full flex flex-col"
+          className="flex w-full flex-col"
           value={
             showbtns
               ? options.find((option) => option.value === showbtns)?.value
@@ -172,8 +172,8 @@ function AutoPlay() {
               options.map((option) =>
                 option.value === value
                   ? { ...option, selected: true }
-                  : { ...option, selected: false }
-              )
+                  : { ...option, selected: false },
+              ),
             );
             setShowbtns(value);
             localStorage.setItem('showbtns', value);
@@ -226,7 +226,7 @@ function AutoNext() {
       />
       <Menu.Content className={submenuClass}>
         <Menu.RadioGroup
-          className="w-full flex flex-col"
+          className="flex w-full flex-col"
           value={
             autoNext
               ? options.find((option) => option.value === autoNext)?.value
@@ -237,8 +237,8 @@ function AutoNext() {
               options.map((option) =>
                 option.value === value
                   ? { ...option, selected: true }
-                  : { ...option, selected: false }
-              )
+                  : { ...option, selected: false },
+              ),
             );
             setAutoNext(value);
             localStorage.setItem('autoNext', value);
@@ -291,7 +291,7 @@ function AutoSkip() {
       />
       <Menu.Content className={submenuClass}>
         <Menu.RadioGroup
-          className="w-full flex flex-col"
+          className="flex w-full flex-col"
           value={
             autoSkip
               ? options.find((option) => option.value === autoSkip)?.value
@@ -302,8 +302,8 @@ function AutoSkip() {
               options.map((option) =>
                 option.value === value
                   ? { ...option, selected: true }
-                  : { ...option, selected: false }
-              )
+                  : { ...option, selected: false },
+              ),
             );
             setAutoSkip(value);
             localStorage.setItem('autoSkip', value);
@@ -338,7 +338,7 @@ function QualitySubmenu() {
       />
       <Menu.Content className={submenuClass}>
         <Menu.RadioGroup
-          className="w-full flex flex-col"
+          className="flex w-full flex-col"
           value={options.selectedValue}
         >
           {options.map(({ label, value, bitrateText, select }) => (
@@ -385,14 +385,14 @@ function SubmenuButton({
 }: SubmenuButtonProps) {
   return (
     <Menu.Button
-      className="ring-media-focus data-[open]:bg-secondary parent left-0 z-10 flex w-full cursor-pointer select-none items-center justify-start rounded-sm p-2.5 outline-none ring-inset data-[open]:sticky data-[open]:-top-2.5 data-[hocus]:bg-white/10 data-[focus]:ring-[3px]"
+      className="ring-media-focus parent left-0 z-10 flex w-full cursor-pointer select-none items-center justify-start rounded-sm p-2.5 outline-none ring-inset data-[open]:sticky data-[open]:-top-2.5 data-[hocus]:bg-white/10 data-[open]:bg-secondary data-[focus]:ring-[3px]"
       disabled={disabled}
     >
       <ChevronLeftIcon className="parent-data-[open]:block -ml-0.5 mr-1.5 hidden h-[18px] w-[18px]" />
-      <div className="contents parent-data-[open]:hidden">
-        <Icon className="w-5 h-5" />
+      <div className="parent-data-[open]:hidden contents">
+        <Icon className="h-5 w-5" />
       </div>
-      <span className="ml-1.5 parent-data-[open]:ml-0">{label}</span>
+      <span className="parent-data-[open]:ml-0 ml-1.5">{label}</span>
       <span className="ml-auto text-sm text-white/50">{hint}</span>
       <ChevronRightIcon className="parent-data-[open]:hidden ml-0.5 h-[18px] w-[18px] text-sm text-white/50" />
     </Menu.Button>

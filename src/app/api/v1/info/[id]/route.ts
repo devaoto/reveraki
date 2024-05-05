@@ -46,7 +46,7 @@ interface Character {
 }
 
 function convertToVoiceActor(
-  consumetVoiceActor: ConsumetVoiceActor
+  consumetVoiceActor: ConsumetVoiceActor,
 ): VoiceActor {
   return {
     name: consumetVoiceActor.name.first + ' ' + consumetVoiceActor.name.last,
@@ -55,10 +55,10 @@ function convertToVoiceActor(
 }
 
 function convertToCharacter(
-  consumetCharacter: ConsumetCharacter
+  consumetCharacter: ConsumetCharacter,
 ): Character | null {
   const originalVoiceActor = consumetCharacter.voiceActors.find(
-    (vo) => vo.language === 'Japanese'
+    (vo) => vo.language === 'Japanese',
   );
   if (!originalVoiceActor) return null;
 
@@ -377,7 +377,7 @@ const fetchAnilistInfo = async (params: Prms) => {
     animeInfo.genres = d.data.Media.genres;
     animeInfo.season = d.data.Media.season;
     animeInfo.studios = d.data.Media.studios.edges.map(
-      (item: any) => item.node.name
+      (item: any) => item.node.name,
     );
     animeInfo.type = d.data.Media.format;
     animeInfo.recommendations = d.data.Media?.recommendations?.edges?.map(
@@ -394,14 +394,14 @@ const fetchAnilistInfo = async (params: Prms) => {
           item.node.mediaRecommendation?.status == 'RELEASING'
             ? 'RELEASING'
             : item.node.mediaRecommendation?.status == 'FINISHED'
-            ? 'FINISHED'
-            : item.node.mediaRecommendation?.status == 'NOT_YET_RELEASED'
-            ? 'NOT_YET_RELEASED'
-            : item.node.mediaRecommendation?.status == 'CANCELLED'
-            ? 'CANCELLED'
-            : item.node.mediaRecommendation?.status == 'HIATUS'
-            ? 'HIATUS'
-            : 'UNKNOWN',
+              ? 'FINISHED'
+              : item.node.mediaRecommendation?.status == 'NOT_YET_RELEASED'
+                ? 'NOT_YET_RELEASED'
+                : item.node.mediaRecommendation?.status == 'CANCELLED'
+                  ? 'CANCELLED'
+                  : item.node.mediaRecommendation?.status == 'HIATUS'
+                    ? 'HIATUS'
+                    : 'UNKNOWN',
         episodes: item.node.mediaRecommendation?.episodes,
         image:
           item.node.mediaRecommendation?.coverImage?.extraLarge ??
@@ -414,7 +414,7 @@ const fetchAnilistInfo = async (params: Prms) => {
           item.node.mediaRecommendation?.coverImage?.medium,
         rating: item.node.mediaRecommendation?.meanScore,
         type: item.node.mediaRecommendation?.format,
-      })
+      }),
     );
 
     animeInfo.characters = d.data?.Media?.characters?.edges?.map(
@@ -441,7 +441,7 @@ const fetchAnilistInfo = async (params: Prms) => {
           },
           image: voiceActor.image.large ?? voiceActor.image.medium,
         })),
-      })
+      }),
     );
 
     animeInfo.relations = d.data?.Media?.relations?.edges?.map((item: any) => ({
@@ -458,14 +458,14 @@ const fetchAnilistInfo = async (params: Prms) => {
         item.node.status == 'RELEASING'
           ? 'RELEASING'
           : item.node.status == 'FINISHED'
-          ? 'FINISHED'
-          : item.node.status == 'NOT_YET_RELEASED'
-          ? 'NOT_YET_RELEASED'
-          : item.node.status == 'CANCELLED'
-          ? 'CANCELLED'
-          : item.node.status == 'HIATUS'
-          ? 'HIATUS'
-          : 'UNKNOWN',
+            ? 'FINISHED'
+            : item.node.status == 'NOT_YET_RELEASED'
+              ? 'NOT_YET_RELEASED'
+              : item.node.status == 'CANCELLED'
+                ? 'CANCELLED'
+                : item.node.status == 'HIATUS'
+                  ? 'HIATUS'
+                  : 'UNKNOWN',
       episodes: item.node.episodes,
       image:
         item.node.coverImage.extraLarge ??
@@ -489,7 +489,7 @@ const fetchAnilistInfo = async (params: Prms) => {
 
 export const GET = async (
   request: NextRequest,
-  { params }: Readonly<Params>
+  { params }: Readonly<Params>,
 ) => {
   try {
     const cacheKey = `anilistInfo:${params.id}`;
@@ -564,7 +564,7 @@ export const GET = async (
         message: 'Internal Server Error',
         status: 500,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };

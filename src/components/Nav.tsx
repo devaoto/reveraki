@@ -43,19 +43,19 @@ export default function NavComp() {
         'Naruto Shippudden',
         'The 100 Girlfrineds',
         'Friren: Beyond...',
-        'Delicious in'
-      )!
+        'Delicious in',
+      )!,
     );
   }, []);
 
   useEffect(() => {
     async function search(
-      query: string
+      query: string,
     ): Promise<ConsumetSearchResult | undefined> {
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_DOMAIN!}/api/v1/search/${query}`,
-          { headers: { 'x-site': 'ezanime' } }
+          { headers: { 'x-site': 'ezanime' } },
         );
         return (await response.json()) as ConsumetSearchResult;
       } catch (error) {
@@ -76,7 +76,7 @@ export default function NavComp() {
   }, [debouncedSearch]);
 
   const handleSearchInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setSearchQuery(event.target.value);
   };
@@ -95,7 +95,7 @@ export default function NavComp() {
             </h1>
           </Link>
         </NavbarBrand>
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarContent className="hidden gap-4 sm:flex" justify="center">
           <NavbarItem>
             <Link color="foreground" href="/">
               Home
@@ -135,11 +135,11 @@ export default function NavComp() {
                           .filter(
                             (s) =>
                               s.status !== 'Not yet aired' &&
-                              s.status !== 'NOT_YET_RELEASED'
+                              s.status !== 'NOT_YET_RELEASED',
                           )
                           .map((result) => (
                             <Link key={result.id} href={`/info/${result.id}`}>
-                              <div className="mb-2 flex cursor-pointer items-center gap-2 duration-200 hover:bg-base-200">
+                              <div className="hover:bg-base-200 mb-2 flex cursor-pointer items-center gap-2 duration-200">
                                 <Image
                                   src={result.image}
                                   alt={result.title.romaji}

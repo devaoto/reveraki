@@ -9,7 +9,7 @@ const FetchDataAndCache = async (
   id: string,
   method?: string,
   headers?: Record<string, string>,
-  body?: any
+  body?: any,
 ) => {
   try {
     let isCached = false;
@@ -117,7 +117,7 @@ export const getTrendingAnime = async (page = 1, perPage = 24) => {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-      JSON.stringify({ query, variables })
+      JSON.stringify({ query, variables }),
     );
 
     const res: any = {
@@ -173,11 +173,11 @@ export const getTrendingAnime = async (page = 1, perPage = 24) => {
   } catch (error) {
     try {
       console.log(
-        'There was an error fetching trending from anilist. Using consumet....'
+        'There was an error fetching trending from anilist. Using consumet....',
       );
       response = await FetchDataAndCache(
         `${process.env.NEXT_PUBLIC_CONSUMET_API}/trending?perPage=${perPage}&page=${page}`,
-        'trending3'
+        'trending3',
       );
       return await response;
     } catch (error) {
@@ -266,7 +266,7 @@ export const getPopularAnime = async () => {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-      JSON.stringify({ query, variables })
+      JSON.stringify({ query, variables }),
     );
     const res: any = {
       currentPage: response.data.Page.pageInfo.currentPage,
@@ -316,12 +316,12 @@ export const getPopularAnime = async () => {
   } catch (error) {
     try {
       console.log(
-        'There was an error fetching popular from anilist. Using consumet....'
+        'There was an error fetching popular from anilist. Using consumet....',
       );
 
       response = await FetchDataAndCache(
         `${process.env.NEXT_PUBLIC_CONSUMET_API}/popular?perPage=24`,
-        'popular3'
+        'popular3',
       );
       return await response;
     } catch (error) {
@@ -412,7 +412,7 @@ export const getSeasonalAnime = async () => {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-      JSON.stringify({ query, variables })
+      JSON.stringify({ query, variables }),
     );
 
     const res: any = {
@@ -463,14 +463,14 @@ export const getSeasonalAnime = async () => {
   } catch (error) {
     try {
       console.log(
-        'There was an error fetching seasonal from anilist. Using consumet....'
+        'There was an error fetching seasonal from anilist. Using consumet....',
       );
 
       response = await FetchDataAndCache(
         `${
           process.env.NEXT_PUBLIC_CONSUMET_API
         }/advanced-search?perPage=24&season=${getCurrentSeason()}&year=${new Date().getFullYear()}`,
-        'seasonal3'
+        'seasonal3',
       );
       return await response;
     } catch (error) {
@@ -483,7 +483,7 @@ export async function getInfo(id: string) {
   try {
     const response = await FetchDataAndCache(
       `${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/info/${id}`,
-      `info:${id}`
+      `info:${id}`,
     );
     return await response;
   } catch (error) {
@@ -494,13 +494,13 @@ export async function getInfo(id: string) {
 export async function getEpisodes(id: string) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/episodes/${id}`
+      `${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/episodes/${id}`,
     );
     let episodes: SiteEpisode[] | undefined;
 
     try {
       episodes = ((await response.json()) as SiteAnime[]).find(
-        (p) => p.providerId === 'anizone'
+        (p) => p.providerId === 'anizone',
       )?.episodes;
     } catch (error) {
       episodes = [];
@@ -519,7 +519,7 @@ export async function getSources(id: string, episodeId: string) {
       }/api/v1/source?source=consumet&id=${id}&episodeid=${
         episodeId.startsWith('/') ? episodeId.slice(1) : episodeId
       }`,
-      `source:${id}i`
+      `source:${id}i`,
     );
     return await response;
   } catch (error) {
@@ -531,11 +531,10 @@ export async function getCharacters(id: string) {
   try {
     const response = await FetchDataAndCache(
       `${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/characters/${id}`,
-      `charOf:${id}i`
+      `charOf:${id}i`,
     );
     return await response;
   } catch (error) {
     console.error(error);
   }
 }
-

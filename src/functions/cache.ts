@@ -21,7 +21,7 @@ export namespace cache {
   export async function set(
     key: string,
     value: any,
-    expireTime?: number
+    expireTime?: number,
   ): Promise<void> {
     if (!cacheInstance) {
       cacheInstance = process.env.REDIS_URI

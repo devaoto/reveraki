@@ -46,7 +46,7 @@ interface Character {
 }
 
 function convertToVoiceActor(
-  consumetVoiceActor: ConsumetVoiceActor
+  consumetVoiceActor: ConsumetVoiceActor,
 ): VoiceActor {
   return {
     name: consumetVoiceActor.name.first + ' ' + consumetVoiceActor.name.last,
@@ -55,10 +55,10 @@ function convertToVoiceActor(
 }
 
 function convertToCharacter(
-  consumetCharacter: ConsumetCharacter
+  consumetCharacter: ConsumetCharacter,
 ): Character | null {
   const originalVoiceActor = consumetCharacter.voiceActors.find(
-    (vo) => vo.language === 'Japanese'
+    (vo) => vo.language === 'Japanese',
   );
 
   if (!originalVoiceActor) return null;
@@ -209,7 +209,7 @@ const fetchAnilistInfo = async (params: Prms) => {
           },
           image: voiceActor.image.large ?? voiceActor.image.medium,
         })),
-      })
+      }),
     );
 
     return animeInfo as any;
@@ -221,7 +221,7 @@ const fetchAnilistInfo = async (params: Prms) => {
 
 export const GET = async (
   request: NextRequest,
-  { params }: Readonly<Params>
+  { params }: Readonly<Params>,
 ) => {
   try {
     const cacheKey = `anilistcharactersc:${params.id}`;
@@ -250,7 +250,7 @@ export const GET = async (
         message: 'Internal Server Error',
         status: 500,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };

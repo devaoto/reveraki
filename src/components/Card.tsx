@@ -105,7 +105,7 @@ export const Cards = ({ data }: { data: ConsumetAnimePage }) => {
                   {anime.title.english ?? anime.title.romaji}
                 </h1>
               </Tooltip>
-              <div className="text-sm font-semibold flex gap-2">
+              <div className="flex gap-2 text-sm font-semibold">
                 <Tooltip
                   color="primary"
                   content="Total Episodes"
@@ -128,10 +128,10 @@ export const Cards = ({ data }: { data: ConsumetAnimePage }) => {
           ))}
         </Swiper>
         {showButtons && (
-          <div className="absolute top-1/2 transform -translate-y-1/2 left-0 right-0 hidden justify-between">
+          <div className="absolute left-0 right-0 top-1/2 hidden -translate-y-1/2 transform justify-between">
             {showPreviousButton && (
               <motion.button
-                className="cursor-pointer duration-200 hover:fill-slate-400 text-2xl"
+                className="cursor-pointer text-2xl duration-200 hover:fill-slate-400"
                 onClick={handlePreviousButtonClick}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -149,7 +149,7 @@ export const Cards = ({ data }: { data: ConsumetAnimePage }) => {
               </motion.button>
             )}
             <motion.button
-              className="cursor-pointer duration-200 hover:fill-slate-400 text-2xl"
+              className="cursor-pointer text-2xl duration-200 hover:fill-slate-400"
               onClick={handleNextButtonClick}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

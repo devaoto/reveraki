@@ -45,7 +45,7 @@ export const Card = ({ anime }: { anime: ConsumetAnime }) => {
           })}
         </h1>
       </Tooltip>
-      <div className="text-sm font-semibold flex gap-2">
+      <div className="flex gap-2 text-sm font-semibold">
         <Tooltip color="primary" content="Total Episodes" placement="right-end">
           {anime?.totalEpisodes ?? 0}
         </Tooltip>{' '}

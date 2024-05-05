@@ -56,7 +56,7 @@ export default function Watch({
   >;
 
   const [infoOrMessage, episodeOrMessage] = use(
-    Promise.all([infoOrMessagePromise, episodeOrMessagePromise])
+    Promise.all([infoOrMessagePromise, episodeOrMessagePromise]),
   );
 
   const info =
@@ -72,13 +72,13 @@ export default function Watch({
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row justify-between ml-5 mr-5">
-        <div className="md:mr-5 flex-grow min-w-full lg:min-w-[72rem] max-w-6xl">
+      <div className="ml-5 mr-5 flex flex-col justify-between lg:flex-row">
+        <div className="min-w-full max-w-6xl flex-grow md:mr-5 lg:min-w-[72rem]">
           <div className="flex flex-col gap-2">
             <Player
               hls={
                 sources.find(
-                  (s: any) => s.quality === 'auto' || s.quality === 'default'
+                  (s: any) => s.quality === 'auto' || s.quality === 'default',
                 ).url
               }
               title={foundEp?.title!}
@@ -96,10 +96,10 @@ export default function Watch({
             width={300}
             height={500}
           />
-          <h1 className="text-xl text-center font-bold">
+          <h1 className="text-center text-xl font-bold">
             {info?.title.english ?? info?.title.romaji}
           </h1>
-          <p className="max-w-[60%] line-clamp-4 text-center">
+          <p className="line-clamp-4 max-w-[60%] text-center">
             {info?.description}
           </p>
           <div className="font-semibold">

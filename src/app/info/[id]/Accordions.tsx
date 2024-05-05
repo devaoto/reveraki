@@ -25,7 +25,7 @@ export const AccordionComponent = ({
   episodes?: any;
 }) => {
   const [selectedKeys, setSelectedKeys] = React.useState(
-    new Set(['1', '2', '3', '4'])
+    new Set(['1', '2', '3', '4']),
   );
 
   return (
