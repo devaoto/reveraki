@@ -22,7 +22,7 @@ interface ApiResponse {
   statusCode: number;
 }
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import {
   isHLSProvider,
@@ -130,7 +130,7 @@ export default function Player({
 
       setSkipData(skipR);
     })();
-  }, []);
+  }, [currentEp, idMal]);
 
   const thumbnail = uniqueSubtitles?.find((e) => e.lang === 'Thumbnails');
 
@@ -139,28 +139,32 @@ export default function Player({
   const episodeLength =
     skipData?.results?.find((item) => item.episodeLength)?.episodeLength || 0;
 
-  const skiptime: { startTime: number; endTime: number; text: string }[] = [];
+  const skiptime = useMemo(() => {
+    const calculatedSkiptime = [];
 
-  if (op?.interval) {
-    skiptime.push({
-      startTime: op.interval.startTime ?? 0,
-      endTime: op.interval.endTime ?? 0,
-      text: 'Opening',
-    });
-  }
-  if (ed?.interval) {
-    skiptime.push({
-      startTime: ed.interval.startTime ?? 0,
-      endTime: ed.interval.endTime ?? 0,
-      text: 'Ending',
-    });
-  } else {
-    skiptime.push({
-      startTime: op?.interval?.endTime ?? 0,
-      endTime: episodeLength,
-      text: '',
-    });
-  }
+    if (op?.interval) {
+      calculatedSkiptime.push({
+        startTime: op.interval.startTime ?? 0,
+        endTime: op.interval.endTime ?? 0,
+        text: 'Opening',
+      });
+    }
+    if (ed?.interval) {
+      calculatedSkiptime.push({
+        startTime: ed.interval.startTime ?? 0,
+        endTime: ed.interval.endTime ?? 0,
+        text: 'Ending',
+      });
+    } else {
+      calculatedSkiptime.push({
+        startTime: op?.interval?.endTime ?? 0,
+        endTime: episodeLength,
+        text: '',
+      });
+    }
+
+    return calculatedSkiptime;
+  }, [op, ed, episodeLength]);
 
   function onCanPlay() {
     if (skiptime && skiptime.length > 0) {
