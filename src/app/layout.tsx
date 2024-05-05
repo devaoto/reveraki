@@ -4,6 +4,7 @@ import './globals.css';
 import { Providers } from './providers';
 import TopProgressBar from '../components/ProgressBar';
 import NavComp from '@/components/Nav';
+import Footer from '@/components/footer';
 
 const exo = Exo({ subsets: ['latin'] });
 
@@ -19,13 +20,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning={true}>
-      <body className={exo.className}>
+      <body className={`${exo.className} flex min-h-screen flex-col`}>
         <Providers>
           <NavComp />
-          <main>{children}</main>
+          <main className="flex-grow">{children}</main>
+          <Footer />
           <TopProgressBar />
         </Providers>
       </body>
     </html>
   );
 }
+
