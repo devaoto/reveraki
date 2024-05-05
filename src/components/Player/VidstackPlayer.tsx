@@ -1,3 +1,7 @@
+/**
+ * ! Change whichever file you want. But if you don't have much knowledge about VidStack player I would recommend you not touch this. This code is really sensitive. One change can change the full player itself. Also the codebase of it is pretty messy so if you have headache reading the code, I'm no one to blame. Peace out - Codeblitz97
+ */
+
 'use client';
 
 import '@vidstack/react/player/styles/base.css';
