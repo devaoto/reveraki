@@ -159,12 +159,12 @@ export default function Player({
       calculatedSkiptime.push({
         startTime: op?.interval?.endTime ?? 0,
         endTime: episodeLength,
-        text: '',
+        text: `${title}`,
       });
     }
 
     return calculatedSkiptime;
-  }, [op, ed, episodeLength]);
+  }, [op, ed, episodeLength, title]);
 
   function onCanPlay() {
     if (skiptime && skiptime.length > 0) {
@@ -354,3 +354,4 @@ export default function Player({
     </div>
   );
 }
+
