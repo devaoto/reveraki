@@ -36,7 +36,11 @@ export namespace cache {
         await (cacheInstance as Redis).set(key, value);
       }
     } else {
-      (cacheInstance as NodeCache).set(key, value, expireTime ?? 3600);
+      if (expireTime) {
+        (cacheInstance as NodeCache).set(key, value, expireTime);
+      } else {
+        (cacheInstance as NodeCache).set(key, value);
+      }
     }
   }
 
@@ -44,3 +48,4 @@ export namespace cache {
     return cache instanceof Redis;
   }
 }
+

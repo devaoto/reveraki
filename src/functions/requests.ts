@@ -494,7 +494,7 @@ export async function getInfo(id: string) {
 export async function getEpisodes(id: string) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/episodes/${id}`,
+      `${process.env.NEXT_PUBLIC_DOMAIN}/api/temp/episodes/${id}`,
     );
     let episodes: SiteEpisode[] | undefined;
 
@@ -538,3 +538,4 @@ export async function getCharacters(id: string) {
     console.error(error);
   }
 }
+

@@ -30,19 +30,6 @@ interface Provider {
   providerId: string;
 }
 
-interface EpisodesData {
-  data: Provider[];
-  latest: {
-    updatedAt: number;
-    latestTitle: string;
-    latestEpisode: number;
-  };
-}
-
-interface EpisodesResponse {
-  episodes: EpisodesData;
-}
-
 interface MetadataEpisode {
   id: string;
   description: string;
@@ -81,18 +68,13 @@ interface MetadataProviderData {
 export const revalidate = 1 * 60 * 60;
 
 const getOrSetCache = async (key: string, fetchData: Function) => {
-  // Get the cached data from redis / node-cache.
   const cachedData = await cache.get(key);
-  console.log(cachedData);
 
-  // If cache data exists, return it.
   if (cachedData) {
     return JSON.parse(cachedData);
   } else {
-    // Doesn't exist, fetch data and respond.
     const freshData = await fetchData();
     await cache.set(key, JSON.stringify(freshData), 3600);
-    console.log(cache.get(key));
     return freshData;
   }
 };
@@ -117,24 +99,10 @@ const findEpisodeData = (
         foundImage = null;
       }
 
-      let foundMetadata;
       // Find the metadata for the episode
-      if (metadata) {
-        foundMetadata = metadata.metadatas.find(
-          (meta) => meta.number === episode.number,
-        );
-      } else {
-        foundMetadata = {
-          metadatas: [
-            {
-              number: null,
-              title: null,
-              fullTitle: null,
-              thumbnail: null,
-            },
-          ],
-        };
-      }
+      const foundMetadata = metadata?.metadatas.find(
+        (meta) => meta.number === episode.number,
+      );
 
       // Construct episode information
       const img = foundImage?.img ?? information.coverImage ?? episode.img;
@@ -219,121 +187,65 @@ const findEpisodeData = (
 
 export const GET = async (request: NextRequest, { params }: Params) => {
   try {
-    const cacheKey = `episodesDataMain:${params.id}`;
+    const cacheKey = `tempEpisodes:${params.id}`;
     const cachedEpisodes = await getOrSetCache(cacheKey, async () => {
-      const episodeImagesPromise = axios
-        .get('https://api.anify.tv/content-metadata/' + params.id, {
-          timeout: 2000,
-        })
-        .catch((e) => undefined);
-      const informationPromise = axios
+      let consumetEpisodes: EpisodeConsumet[] = [];
+      let information = await axios
         .get(`${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/info/${params.id}`)
         .catch((e) => undefined);
 
-      const [episodeImagesData, informationData] = await Promise.all([
-        episodeImagesPromise,
-        informationPromise,
-      ]);
-
-      let episodeImages;
-      let episodeMetadata;
-      let information;
-
-      if (episodeImagesData === undefined) {
-        episodeImages = undefined;
-        episodeMetadata = undefined;
+      try {
+        consumetEpisodes = (
+          await axios.get(
+            `${process.env.CONSUMET_API}/meta/anilist/episodes/${params.id}`,
+          )
+        ).data;
+      } catch (consumetError) {
+        console.error(
+          'Error fetching episodes from consumet API:',
+          consumetError,
+        );
+        return NextResponse.json(
+          {
+            message: 'Internal Server Error',
+            status: 500,
+          },
+          { status: 500 },
+        );
       }
 
-      [episodeImages, episodeMetadata, information] = await Promise.all([
-        episodeImagesData !== undefined
-          ? (episodeImagesData.data as Promise<MetadataProviderData[]>)
-          : new Promise((r) => r(undefined)),
-        new Promise((r) => r(undefined)),
-        informationData?.data,
-      ]);
+      let convertedEpisodes: IEpisode[] | undefined;
 
-      try {
-        const anifyEpisodes = (
-          await axios.get(
-            `https://api.anify.tv/info/${params.id}?fields=[episodes]`,
-          )
-        ).data as EpisodesResponse;
+      if (consumetEpisodes.length > 0) {
+        convertedEpisodes = consumetEpisodes.map(convertToEpisode);
+      } else {
+        convertedEpisodes = [];
+      }
 
-        let eps;
+      let ceps;
 
-        if (anifyEpisodes.episodes.data.length > 0) {
-          eps = anifyEpisodes.episodes.data.map((anifyEpisode) => ({
+      if (convertedEpisodes.length > 0) {
+        ceps = [
+          {
             episodes: findEpisodeData(
-              anifyEpisode.episodes,
-              information,
-              episodeMetadata as AnimeData | undefined,
-              episodeImages as MetadataProviderData[] | undefined,
+              convertedEpisodes as Episode[],
+              information?.data,
+              undefined, // Pass undefined for metadata as it's not available from Consumet API
+              undefined, // Pass undefined for episodeImages as it's not available from Consumet API
             ),
-            providerId:
-              anifyEpisode.providerId === 'zoro' ? 'anirise' : 'anizone',
-          }));
-        } else {
-          eps = {
+            providerId: 'anizone',
+          },
+        ];
+      } else {
+        ceps = [
+          {
             episodes: [],
             providerId: 'anizone',
-          };
-        }
-        return eps;
-      } catch (error) {
-        let consumetEpisodes: EpisodeConsumet[] = [];
-        try {
-          consumetEpisodes = (
-            await axios.get(
-              `${process.env.CONSUMET_API}/meta/anilist/episodes/${params.id}`,
-            )
-          ).data;
-        } catch (consumetError) {
-          console.error(
-            'Error fetching episodes from consumet API:',
-            consumetError,
-          );
-          return NextResponse.json(
-            {
-              message: 'Internal Server Error',
-              status: 500,
-            },
-            { status: 500 },
-          );
-        }
-
-        let convertedEpisodes: IEpisode[] | undefined;
-
-        if (consumetEpisodes.length > 0) {
-          convertedEpisodes = consumetEpisodes.map(convertToEpisode);
-        } else {
-          convertedEpisodes = [];
-        }
-
-        let ceps;
-
-        if (convertedEpisodes.length > 0) {
-          ceps = [
-            {
-              episodes: findEpisodeData(
-                convertedEpisodes as Episode[],
-                information,
-                episodeMetadata as AnimeData | undefined,
-                episodeImages as MetadataProviderData[] | undefined,
-              ),
-              providerId: 'anizone',
-            },
-          ];
-        } else {
-          ceps = [
-            {
-              episodes: [],
-              providerId: 'anizone',
-            },
-          ];
-        }
-
-        return ceps;
+          },
+        ];
       }
+
+      return ceps;
     });
 
     return NextResponse.json(cachedEpisodes);
@@ -348,4 +260,3 @@ export const GET = async (request: NextRequest, { params }: Params) => {
     );
   }
 };
-
