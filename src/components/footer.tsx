@@ -1,6 +1,12 @@
 import React from 'react';
 import { FaGithub, FaDiscord } from 'react-icons/fa';
 import { Link, Tooltip } from '@nextui-org/react';
+import { Yeseva_One } from 'next/font/google';
+
+const yesevaOne = Yeseva_One({
+  subsets: ['latin', 'cyrillic', 'cyrillic-ext', 'latin-ext'],
+  weight: ['400'],
+});
 
 function Footer() {
   const year = new Date().getFullYear();
@@ -11,13 +17,13 @@ function Footer() {
         <div className="mx-auto w-full p-4 py-6 lg:max-w-[85%] lg:pb-3 lg:pt-8">
           <div className="lg:flex lg:justify-between">
             <div className="mb-6 lg:mb-0">
-              <Link href="/" className="flex w-fit items-center">
-                <p
-                  className={`reveraki self-center whitespace-nowrap text-3xl font-medium dark:text-white`}
-                >
-                  REVERAKI
-                </p>
-              </Link>
+              <div className="flex w-fit items-center">
+                <Link color="foreground" href="/">
+                  <h1 className={`text-4xl ${yesevaOne.className}`}>
+                    Rever<span className="text-[#f45c92]">Aki</span>
+                  </h1>
+                </Link>
+              </div>
               <p className="font-karla text-[0.7rem] text-[#ffffffb2] lg:w-[520px] lg:text-[0.8rem]">
                 This site does not store any files on our server, we are linked
                 to the media which is hosted on 3rd party services.
@@ -43,9 +49,11 @@ function Footer() {
       <div className="bg-tersier mt-2 border-t border-white/5"></div>
       <div className="mx-auto w-full py-3 text-[0.7rem] text-[#ffffffb2] lg:flex lg:max-w-[83%] lg:items-center lg:justify-between lg:text-[0.8rem]">
         <span className="ms-5 sm:text-center lg:ms-0">
-          © {year}{' '}
-          <Link href="/" className="hover:text-white">
-            REVERAKI™
+          <span className="select-none">©</span> {year}{' '}
+          <Link color="foreground" href="/">
+            <h1 className={`${yesevaOne.className}`}>
+              Rever<span className="text-[#f45c92]">Aki</span>
+            </h1>
           </Link>{' '}
           | Made by <span className="font-bold">codeblitz97</span>
         </span>
