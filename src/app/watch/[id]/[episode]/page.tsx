@@ -102,11 +102,11 @@ export default function Watch({
           <p className="max-w-[60%] line-clamp-4 text-center">
             {info?.description}
           </p>
-          <p className="font-semibold">
+          <div className="font-semibold">
             {info?.type} |{' '}
             {<GenerateColoredElementByStatus status={info?.status!} />} |{' '}
             {<GenerateColoredElementBySeason season={info?.season!} />}
-          </p>
+          </div>
         </div>
       </div>
 
