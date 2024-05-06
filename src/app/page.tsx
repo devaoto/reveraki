@@ -5,7 +5,6 @@ import {
   getSeasonalAnime,
   getTrendingAnime,
 } from '@/functions/requests';
-import { Hero } from '@/components/Hero';
 import { CiStar } from 'react-icons/ci';
 import { FaFire } from 'react-icons/fa6';
 import { getCurrentSeason } from '@/functions/utilityFunctions';
@@ -13,6 +12,8 @@ import { GiButterfly, GiPalmTree, GiTreeBranch } from 'react-icons/gi';
 import { FaTree } from 'react-icons/fa';
 import { capitalizeFirstLetter } from '@/functions/utilityFunctions';
 import { ConsumetAnimePage } from '@/types/consumet';
+import dynamic from 'next/dynamic';
+const Hero = dynamic(() => import('@/components/Hero'), { ssr: false });
 
 export const revalidate = 1 * 60 * 60;
 
@@ -64,3 +65,4 @@ export default function Home() {
     </>
   );
 }
+

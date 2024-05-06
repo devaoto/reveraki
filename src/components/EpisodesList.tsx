@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion';
 import { IEpisode } from '@/functions/utilityFunctions';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
 import { BiGrid, BiLayout, BiAlignLeft } from 'react-icons/bi';
 import { Button, Image, Tooltip } from '@nextui-org/react';
 import { useSSRLocalStorage } from '@/hooks/useSSRLocalStorage';
@@ -143,3 +142,4 @@ const EpisodesList = ({
 };
 
 export default EpisodesList;
+
