@@ -5,6 +5,7 @@ import { Providers } from './providers';
 import TopProgressBar from '../components/ProgressBar';
 import NavComp from '@/components/Nav';
 import Footer from '@/components/footer';
+import { ScrollToTop } from '@/components/ScrollToTop';
 
 const exo = Exo({ subsets: ['latin'] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
           <main className="flex-grow">{children}</main>
           <Footer />
           <TopProgressBar />
+          <ScrollToTop />
         </Providers>
       </body>
     </html>
