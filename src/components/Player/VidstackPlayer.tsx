@@ -44,9 +44,11 @@ import {
   Gesture,
   PlayerSrc,
   useMediaStore,
+  useMediaRemote,
 } from '@vidstack/react';
 
 import { VideoLayout } from './components/layouts/video-layout';
+import VideoProgressSave from '@/hooks/VideoProgressSave';
 
 type Props = {
   hls?: string;
@@ -58,6 +60,9 @@ type Props = {
     url?: string;
     lang?: string;
   }[];
+  epid: string;
+  animeTitle: string;
+  anId: string;
   sources?: {
     url?: string;
     quality?: string;
@@ -69,12 +74,17 @@ export default function Player({
   title,
   cover,
   currentEp,
+  epid,
+  animeTitle,
   idMal,
+  anId,
   subtitles,
   sources,
 }: Readonly<Props>) {
   let player = useRef<MediaPlayerInstance>(null);
   const { duration } = useMediaStore(player);
+  const remote = useMediaRemote(player);
+  const [getVideoProgress, UpdateVideoProgress] = VideoProgressSave();
 
   useEffect(() => {
     // Subscribe to state updates.
@@ -203,7 +213,7 @@ export default function Player({
       setshowbtn(btn === 'on');
     }
   }, []);
-  let interval;
+  let interval: any;
 
   useEffect(() => {
     player.current?.subscribe(({ currentTime, duration }) => {
@@ -238,6 +248,59 @@ export default function Player({
       }
     });
   }, [skiptime]);
+
+  useEffect(() => {
+    if (isPlaying) {
+      interval = setInterval(async () => {
+        const currentTime = player.current?.currentTime
+          ? Math.round(player.current?.currentTime)
+          : 0;
+
+        const epimage = cover;
+
+        UpdateVideoProgress(anId, {
+          id: String(anId),
+          epid: epid,
+          eptitle: title,
+          aniTitle: animeTitle,
+          image: cover,
+          epnum: Number(currentEp),
+          duration: duration,
+          timeWatched: currentTime,
+          subtype: 'sub',
+          createdAt: new Date().toISOString(),
+        });
+      }, 5000);
+    } else {
+      clearInterval(interval);
+    }
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isPlaying, duration]);
+
+  function onLoadedMetadata() {
+    const seek = getVideoProgress(anId);
+    if (seek?.epnum === Number(currentEp)) {
+      const seekTime = seek?.timeWatched;
+      const percentage = duration !== 0 ? seekTime / Math.round(duration) : 0;
+
+      if (percentage >= 0.9) {
+        remote.seek(0);
+      } else {
+        remote.seek(seekTime - 3);
+      }
+    }
+  }
+
+  function onPlay() {
+    setIsPlaying(true);
+  }
+
+  function onEnd() {
+    setIsPlaying(false);
+  }
 
   function handleop() {
     console.log('Skipping Intro');
@@ -302,6 +365,9 @@ export default function Player({
           aspectRatio={`16 / 9`}
           onProviderChange={onProviderChange}
           onCanPlay={onCanPlay}
+          onPlay={onPlay}
+          onEnd={onEnd}
+          onLoadedMetadata={onLoadedMetadata}
           ref={player}
         >
           <MediaProvider>

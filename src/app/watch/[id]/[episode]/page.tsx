@@ -76,6 +76,13 @@ export default function Watch({
         <div className="min-w-full max-w-6xl flex-grow md:mr-5 lg:min-w-[72rem]">
           <div className="flex flex-col gap-2">
             <Player
+              epid={foundEp?.id!}
+              animeTitle={
+                (info?.title.english ??
+                info?.title.romaji ??
+                info?.title.english)  as string
+              }
+              anId={params.id}
               hls={
                 sources.find(
                   (s: any) => s.quality === 'auto' || s.quality === 'default',
