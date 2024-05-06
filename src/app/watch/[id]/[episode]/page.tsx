@@ -74,7 +74,6 @@ export default function Watch({
   const foundEp = episode?.find((e) => e.number === Number(params.episode));
 
   const sources = use(getSources(params.id, foundEp?.id!)).sources;
-  const thumbnails = use(getThumbnails(params.id, params.episode));
 
   return (
     <>
@@ -98,7 +97,6 @@ export default function Watch({
               cover={foundEp?.img!}
               idMal={info?.malId!}
               currentEp={params.episode}
-              thumbnails={thumbnails}
             />
             <h1 className="text-xl font-bold">{foundEp?.title}</h1>
           </div>
