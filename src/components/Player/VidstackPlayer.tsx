@@ -67,6 +67,10 @@ type Props = {
     url?: string;
     quality?: string;
   }[];
+  thumbnails?: {
+    file: string;
+    kind: string;
+  };
 };
 
 export default function Player({
@@ -80,6 +84,7 @@ export default function Player({
   anId,
   subtitles,
   sources,
+  thumbnails,
 }: Readonly<Props>) {
   let player = useRef<MediaPlayerInstance>(null);
   const { duration } = useMediaStore(player);
@@ -418,7 +423,13 @@ export default function Player({
               Skip Ending
             </button>
           )}
-          <VideoLayout />
+          {thumbnails && thumbnails.file ? (
+            <VideoLayout
+              thumbnails={`${process.env.NEXT_PUBLIC_CORS_PROXY_URL}/${thumbnails.file}`}
+            />
+          ) : (
+            <VideoLayout />
+          )}
         </MediaPlayer>
       )}
     </div>

@@ -1,5 +1,10 @@
 import Player from '@/components/Player/VidstackPlayer';
-import { getInfo, getEpisodes, getSources } from '@/functions/requests';
+import {
+  getInfo,
+  getEpisodes,
+  getSources,
+  getThumbnails,
+} from '@/functions/requests';
 import { IEpisode, numberToMonth } from '@/functions/utilityFunctions';
 import { AnimeInfo, SiteEpisode } from '@/types/site';
 import { use } from 'react';
@@ -69,6 +74,7 @@ export default function Watch({
   const foundEp = episode?.find((e) => e.number === Number(params.episode));
 
   const sources = use(getSources(params.id, foundEp?.id!)).sources;
+  const thumbnails = use(getThumbnails(params.id, params.episode));
 
   return (
     <>
@@ -79,8 +85,8 @@ export default function Watch({
               epid={foundEp?.id!}
               animeTitle={
                 (info?.title.english ??
-                info?.title.romaji ??
-                info?.title.english)  as string
+                  info?.title.romaji ??
+                  info?.title.english) as string
               }
               anId={params.id}
               hls={
@@ -92,6 +98,7 @@ export default function Watch({
               cover={foundEp?.img!}
               idMal={info?.malId!}
               currentEp={params.episode}
+              thumbnails={thumbnails}
             />
             <h1 className="text-xl font-bold">{foundEp?.title}</h1>
           </div>

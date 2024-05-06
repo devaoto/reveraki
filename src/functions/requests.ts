@@ -539,3 +539,15 @@ export async function getCharacters(id: string) {
   }
 }
 
+export async function getThumbnails(id: string, episodeNumber: number) {
+  try {
+    const response = await FetchDataAndCache(
+      `${process.env.NEXT_PUBLIC_DOMAIN}/api/v2/thumbnails/${id}?episodeNumber=${episodeNumber}`,
+      `e_thumbails:${id}:ep${episodeNumber}`,
+    );
+    return await response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
