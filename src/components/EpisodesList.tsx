@@ -64,9 +64,9 @@ const EpisodesList = ({
                       <Image
                         src={episode.img!}
                         alt={episode.title}
-                        width={1500}
-                        height={1500}
-                        className="min-h-[50px] min-w-[100px] object-cover sm:max-w-[200px] md:min-w-[150px] md:max-w-[150px] lg:min-h-[150px] lg:min-w-[200px] lg:max-w-[200px] xl:min-w-[250px] xl:max-w-[250px]"
+                        width={1600}
+                        height={900}
+                        className="min-h-[200px] object-cover sm:min-h-[50px] sm:min-w-[100px] sm:max-w-[200px] md:min-h-[50px] md:min-w-[150px] md:max-w-[150px] lg:min-h-[100px] lg:min-w-[200px] lg:max-w-[200px] xl:min-h-[150px] xl:min-w-[250px] xl:max-w-[250px]"
                       />
                       <div className="absolute left-0 top-0 z-20 bg-black text-white opacity-65">
                         EP {episode.number}
@@ -98,9 +98,9 @@ const EpisodesList = ({
                           <Image
                             src={episode.img}
                             alt={episode.title}
-                            width={1500}
-                            height={1500}
-                            className="min-h-[200px] object-cover sm:min-h-[50px] sm:min-w-[100px] sm:max-w-[200px] md:min-w-[150px] md:max-w-[150px] lg:min-w-[200px] lg:max-w-[200px] xl:min-w-[250px] xl:max-w-[250px]"
+                            width={1600}
+                            height={900}
+                            className="min-h-[200px] object-cover sm:min-h-[50px] sm:min-w-[100px] sm:max-w-[200px] md:min-h-[50px] md:min-w-[150px] md:max-w-[150px] lg:min-h-[100px] lg:min-w-[200px] lg:max-w-[200px] xl:min-h-[150px] xl:min-w-[250px] xl:max-w-[250px]"
                           />
                         </div>
                         <div className="flex flex-col">
