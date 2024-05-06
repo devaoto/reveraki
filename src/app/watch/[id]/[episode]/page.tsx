@@ -1,4 +1,3 @@
-import { EpisodesList } from '@/components/EpisodesList';
 import Player from '@/components/Player/VidstackPlayer';
 import { getInfo, getEpisodes, getSources } from '@/functions/requests';
 import { IEpisode } from '@/functions/utilityFunctions';
@@ -116,3 +115,4 @@ export default function Watch({
     </>
   );
 }
+
