@@ -1,15 +1,16 @@
 import Player from '@/components/Player/VidstackPlayer';
 import { getInfo, getEpisodes, getSources } from '@/functions/requests';
-import { IEpisode } from '@/functions/utilityFunctions';
+import { IEpisode, numberToMonth } from '@/functions/utilityFunctions';
 import { AnimeInfo, SiteEpisode } from '@/types/site';
 import { use } from 'react';
 import { Accordions } from './Accordions';
 import { Metadata, Viewport } from 'next';
-import { Image } from '@nextui-org/react';
+import { Image, Link } from '@nextui-org/react';
 import {
   GenerateColoredElementBySeason,
   GenerateColoredElementByStatus,
 } from '@/functions/jsxUtilityFunctions';
+import { FaCalendarAlt } from 'react-icons/fa';
 
 export async function generateMetadata({
   params,
@@ -88,25 +89,33 @@ export default function Watch({
             <h1 className="text-xl font-bold">{foundEp?.title}</h1>
           </div>
         </div>
-        <div className="flex flex-col items-center">
-          <Image
-            src={info?.bannerImage}
-            alt={info?.title.english ?? info?.title.romaji}
-            width={300}
-            height={500}
-          />
-          <h1 className="text-center text-xl font-bold">
-            {info?.title.english ?? info?.title.romaji}
-          </h1>
-          <p className="line-clamp-4 max-w-[60%] text-center">
-            {info?.description}
-          </p>
-          <div className="font-semibold">
-            {info?.type} |{' '}
-            {<GenerateColoredElementByStatus status={info?.status!} />} |{' '}
-            {<GenerateColoredElementBySeason season={info?.season!} />}
+        <Link href={`/info/${params.id}`}>
+          <div className="flex flex-col items-center">
+            <Image
+              src={info?.bannerImage}
+              alt={info?.title.english ?? info?.title.romaji}
+              width={300}
+              height={500}
+            />
+            <h1 className="line-clamp-1 text-center text-lg font-bold text-white">
+              {info?.title.english ?? info?.title.romaji}
+            </h1>
+            <div>
+              <div className="flex items-center gap-1 text-white">
+                <FaCalendarAlt />{' '}
+                <span>
+                  {info?.startDate.day} {numberToMonth(info?.startDate.month!)}{' '}
+                  {info?.startDate.year}
+                </span>
+              </div>
+            </div>
+            <div className="text-sm font-semibold">
+              {info?.type} |{' '}
+              {<GenerateColoredElementByStatus status={info?.status!} />} |{' '}
+              {<GenerateColoredElementBySeason season={info?.season!} />}
+            </div>
           </div>
-        </div>
+        </Link>
       </div>
 
       <div className="ml-5 mt-10">
