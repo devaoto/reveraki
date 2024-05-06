@@ -42,6 +42,15 @@ function Footer() {
                   Privacy Policy
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/settings"
+                  target="_blank"
+                  className="!text-[0.8rem] !font-semibold"
+                >
+                  Settings
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
