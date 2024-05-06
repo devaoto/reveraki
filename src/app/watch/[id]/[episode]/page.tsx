@@ -10,12 +10,14 @@ import { AnimeInfo, SiteEpisode } from '@/types/site';
 import { use } from 'react';
 import { Accordions } from './Accordions';
 import { Metadata, Viewport } from 'next';
-import { Image, Link } from '@nextui-org/react';
+import { Button, Image, Link } from '@nextui-org/react';
 import {
   GenerateColoredElementBySeason,
   GenerateColoredElementByStatus,
 } from '@/functions/jsxUtilityFunctions';
 import { FaCalendarAlt } from 'react-icons/fa';
+import { BiShareAlt } from 'react-icons/bi';
+import { Share } from './Share';
 
 export async function generateMetadata({
   params,
@@ -98,7 +100,14 @@ export default function Watch({
               idMal={info?.malId!}
               currentEp={params.episode}
             />
-            <h1 className="text-xl font-bold">{foundEp?.title}</h1>
+            <div className="flex items-center justify-between">
+              <h1 className="text-xl font-bold">{foundEp?.title}</h1>
+              <Share
+                id={params.id}
+                episode={params.episode}
+                title={foundEp?.title!}
+              />
+            </div>
           </div>
         </div>
         <Link href={`/info/${params.id}`}>
