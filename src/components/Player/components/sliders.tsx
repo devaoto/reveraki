@@ -1,10 +1,20 @@
 import { TimeSlider, VolumeSlider } from '@vidstack/react';
+import React from 'react';
 
 export function Volume() {
+  const [color, setColor] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    setColor(localStorage.getItem('playerBaseColor') || '#05234e');
+  }, []);
+
   return (
     <VolumeSlider.Root className="volume-slider group relative mx-[7.5px] inline-flex h-10 w-full max-w-[80px] cursor-pointer touch-none select-none items-center outline-none aria-hidden:hidden">
       <VolumeSlider.Track className="ring-media-focus relative z-0 h-[5px] w-full rounded-sm bg-white/30 group-data-[focus]:ring-[3px]">
-        <VolumeSlider.TrackFill className="bg-media-brand absolute h-full w-[var(--slider-fill)] rounded-sm bg-blue-200 will-change-[width]" />
+        <VolumeSlider.TrackFill
+          style={{ backgroundColor: color ? color : '#05234e' }}
+          className={`bg-media-brand absolute h-full w-[var(--slider-fill)] rounded-sm will-change-[width]`}
+        />
       </VolumeSlider.Track>
 
       <VolumeSlider.Preview
@@ -23,6 +33,12 @@ export interface TimeSliderProps {
 }
 
 export function Time({ thumbnails }: TimeSliderProps) {
+  const [color, setColor] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    setColor(localStorage.getItem('playerBaseColor') || '#05234e');
+  }, []);
+
   return (
     <TimeSlider.Root className="time-slider group relative mx-[7.5px] inline-flex h-10 w-full cursor-pointer touch-none select-none items-center outline-none">
       <TimeSlider.Chapters className="relative flex h-full w-full items-center rounded-[1px]">
@@ -35,7 +51,10 @@ export function Time({ thumbnails }: TimeSliderProps) {
               ref={forwardRef}
             >
               <TimeSlider.Track className="ring-media-focus relative z-0 h-[5px] w-full rounded-sm bg-white/30 group-data-[focus]:ring-[3px]">
-                <TimeSlider.TrackFill className="bg-media-brand absolute h-full w-[var(--chapter-fill)] rounded-sm bg-blue-500 will-change-[width]" />
+                <TimeSlider.TrackFill
+                  style={{ backgroundColor: color ? color : '#05234e' }}
+                  className={`bg-media-brand absolute h-full w-[var(--chapter-fill)] rounded-sm will-change-[width]`}
+                />
                 <TimeSlider.Progress className="absolute z-10 h-full w-[var(--chapter-progress)] rounded-sm bg-white/50 will-change-[width]" />
               </TimeSlider.Track>
             </div>
@@ -63,3 +82,4 @@ export function Time({ thumbnails }: TimeSliderProps) {
     </TimeSlider.Root>
   );
 }
+

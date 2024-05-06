@@ -27,6 +27,7 @@ import {
 
 import { buttonClass, tooltipClass } from './buttons';
 import React, { useState } from 'react';
+import { Link } from '@nextui-org/react';
 
 export interface SettingsProps {
   placement: MenuPlacement;
@@ -63,6 +64,7 @@ export function Settings({ placement, tooltipPlacement }: SettingsProps) {
         <AutoSkip />
         <SpeedSubmenu />
         <QualitySubmenu />
+        <AdvancedSettingsButton />
       </Menu.Content>
     </Menu.Root>
   );
@@ -352,6 +354,20 @@ function QualitySubmenu() {
   );
 }
 
+function AdvancedSettingsButton() {
+  return (
+    <Menu.Root>
+      <Link href="/settings/player" target="_blank">
+        <SubmenuButton
+          label="Advanced Settings"
+          hint=""
+          icon={SettingsIcon}
+        ></SubmenuButton>
+      </Link>
+    </Menu.Root>
+  );
+}
+
 export interface RadioProps extends Menu.RadioProps {}
 
 function Radio({ children, ...props }: RadioProps) {
@@ -383,9 +399,30 @@ function SubmenuButton({
   icon: Icon,
   disabled,
 }: SubmenuButtonProps) {
+  const [r, setR] = React.useState(null);
+
+  React.useEffect(() => {
+    const clr = localStorage.getItem('playerMenuColor');
+    if (clr) {
+      setR(clr);
+    }
+  }, []);
+
+  const possibilities = [
+    'bg-primary',
+    'bg-secondary',
+    'bg-success',
+    'bg-warning',
+    'bg-danger',
+    'data-[open]:bg-primary',
+    'data-[open]:bg-secondary',
+    'data-[open]:bg-success',
+    'data-[open]:bg-warning',
+    'data-[open]:bg-danger',
+  ];
   return (
     <Menu.Button
-      className="ring-media-focus parent left-0 z-10 flex w-full cursor-pointer select-none items-center justify-start rounded-sm p-2.5 outline-none ring-inset data-[open]:sticky data-[open]:-top-2.5 data-[hocus]:bg-white/10 data-[open]:bg-secondary data-[focus]:ring-[3px]"
+      className={`ring-media-focus parent left-0 z-10 flex w-full cursor-pointer select-none items-center justify-start rounded-sm p-2.5 outline-none ring-inset data-[open]:sticky data-[open]:-top-2.5 data-[hocus]:bg-white/10 data-[open]:${r ? r : 'bg-primary'} data-[focus]:ring-[3px]`}
       disabled={disabled}
     >
       <ChevronLeftIcon className="parent-data-[open]:block -ml-0.5 mr-1.5 hidden h-[18px] w-[18px]" />
@@ -398,3 +435,4 @@ function SubmenuButton({
     </Menu.Button>
   );
 }
+
