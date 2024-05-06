@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Cards } from '@/components/Card';
-import { EpisodesList } from '@/components/EpisodesList';
 import { GenerateColoredElementBySeason } from '@/functions/jsxUtilityFunctions';
 import {
   numberToMonth,
@@ -12,6 +11,11 @@ import {
 import { ConsumetAnime } from '@/types/consumet';
 import { AnimeInfo } from '@/types/site';
 import { Accordion, AccordionItem } from '@nextui-org/react';
+import dynamic from 'next/dynamic';
+
+const EpisodesList = dynamic(() => import('@/components/EpisodesList'), {
+  ssr: false,
+});
 
 export const Accordions = ({
   info,
@@ -58,3 +62,4 @@ export const Accordions = ({
     </Accordion>
   );
 };
+

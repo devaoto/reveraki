@@ -6,8 +6,9 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { BiGrid, BiLayout, BiAlignLeft } from 'react-icons/bi';
 import { Button, Image, Tooltip } from '@nextui-org/react';
+import { useSSRLocalStorage } from '@/hooks/useSSRLocalStorage';
 
-export const EpisodesList = ({
+const EpisodesList = ({
   episodes,
   id,
   current,
@@ -16,23 +17,15 @@ export const EpisodesList = ({
   id: string;
   current?: number;
 }) => {
-  const [layoutOption, setLayoutOption] = useState<
-    'grid' | 'flex-col' | 'layout-3'
-  >('flex-col');
-
-  useEffect(() => {
-    const storedLayoutOption = localStorage.getItem('layoutOption');
-    if (
-      storedLayoutOption &&
-      ['grid', 'flex-col', 'layout-3'].includes(storedLayoutOption)
-    ) {
-      setLayoutOption(storedLayoutOption as 'grid' | 'flex-col' | 'layout-3');
-    }
-  }, []);
+  const [layoutOption, setLayoutOption] = useSSRLocalStorage(
+    'layoutOption',
+    'flex-col',
+  );
 
   const handleLayoutChange = (layout: 'grid' | 'flex-col' | 'layout-3') => {
     setLayoutOption(layout);
   };
+
   return (
     <div className="gap-2 overflow-y-auto overflow-x-hidden">
       <div className="mb-2 flex justify-end gap-2">
@@ -148,3 +141,5 @@ export const EpisodesList = ({
     </div>
   );
 };
+
+export default EpisodesList;

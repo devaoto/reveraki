@@ -12,6 +12,7 @@ const PrivacyPolicy = () => {
       </Breadcrumbs>
 
       <h1 className="mb-4 text-3xl font-semibold">Privacy Policy</h1>
+      <h1 className="text-2xl">Last updated: 05/06/2024</h1>
       <p className="mb-4 text-lg">
         At Reveraki, we take your privacy seriously. We are committed to
         protecting the privacy of our users and ensuring that all personal
@@ -19,8 +20,10 @@ const PrivacyPolicy = () => {
       </p>
       <p className="mb-4 text-lg">
         Reveraki does not collect any personal information from its users. We do
-        not use cookies or any other tracking technologies. We do not store or
-        share any data with third parties.
+        not use cookies or any other tracking technologies. We only store a few
+        settings locally when the app is accessed from localhost. You can remove
+        your local storage data by clearing your browser site cache or removing
+        local storage values.
       </p>
       <p className="mb-4 text-lg">
         Our app is designed to respect your privacy and anonymity. You can use

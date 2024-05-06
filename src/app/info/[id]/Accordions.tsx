@@ -3,7 +3,6 @@
 import React from 'react';
 import { Cards } from '@/components/Card';
 import { Characters } from '@/components/Characters';
-import { EpisodesList } from '@/components/EpisodesList';
 import { GenerateColoredElementBySeason } from '@/functions/jsxUtilityFunctions';
 import {
   capitalizeFirstLetter,
@@ -12,6 +11,11 @@ import {
 import { ConsumetAnime } from '@/types/consumet';
 import { AnimeInfo, CharacterRes } from '@/types/site';
 import { Accordion, AccordionItem } from '@nextui-org/accordion';
+import dynamic from 'next/dynamic';
+
+const EpisodesList = dynamic(() => import('@/components/EpisodesList'), {
+  ssr: false,
+});
 
 export const AccordionComponent = ({
   info,
@@ -110,3 +114,4 @@ export const AccordionComponent = ({
     </Accordion>
   );
 };
+
