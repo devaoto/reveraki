@@ -91,7 +91,7 @@ export default function NavComp() {
         <NavbarBrand>
           <Link color="foreground" href="/">
             <h1 className={`text-4xl ${yesevaOne.className}`}>
-              Rever<span className="text-[#f45c92]">Aki</span>
+              Rever<span className="text-primary">Aki</span>
             </h1>
           </Link>
         </NavbarBrand>
@@ -178,3 +178,4 @@ export default function NavComp() {
     </>
   );
 }
+

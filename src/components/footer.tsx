@@ -20,7 +20,7 @@ function Footer() {
               <div className="flex w-fit items-center">
                 <Link color="foreground" href="/">
                   <h1 className={`text-4xl ${yesevaOne.className}`}>
-                    Rever<span className="text-[#f45c92]">Aki</span>
+                    Rever<span className="text-primary">Aki</span>
                   </h1>
                 </Link>
               </div>
@@ -61,7 +61,7 @@ function Footer() {
           <span className="select-none">©</span> {year}{' '}
           <Link color="foreground" href="/">
             <h1 className={`${yesevaOne.className}`}>
-              Rever<span className="text-[#f45c92]">Aki</span>
+              Rever<span className="text-primary">Aki</span>
             </h1>
           </Link>{' '}
           | Made by <span className="font-bold">codeblitz97</span>

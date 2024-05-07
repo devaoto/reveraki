@@ -94,7 +94,7 @@ const Hero = ({ data }: { data: ConsumetAnimePage }) => {
                     />
                   </>
                 )}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#080006]">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background">
                   <div className="ml-5 flex h-full flex-col justify-end gap-8">
                     <div>
                       <h3 style={{ color: randomAnime.color ?? 'pink' }}>
