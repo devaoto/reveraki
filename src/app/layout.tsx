@@ -12,6 +12,10 @@ const Changelogs = dynamic(() => import('@/components/Changelogs'), {
   ssr: false,
 });
 
+const ThemeProvider = dynamic(() => import('./ThemeProvider'), {
+  ssr: false,
+});
+
 const exo = Exo({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -25,15 +29,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning={true}>
+    <html lang="en" suppressHydrationWarning={true}>
       <body className={`${exo.className} flex min-h-screen flex-col`}>
         <Providers>
-          <NavComp />
-          <main className="flex-grow">{children}</main>
-          <Footer />
-          <TopProgressBar />
-          <ScrollToTop />
-          <Changelogs />
+          <ThemeProvider>
+            <NavComp />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+            <TopProgressBar />
+            <ScrollToTop />
+            <Changelogs />
+          </ThemeProvider>
         </Providers>
       </body>
     </html>
