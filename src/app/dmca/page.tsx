@@ -11,7 +11,7 @@ export default function DMCA() {
       </Breadcrumbs>
 
       <h1 className="mb-2 mt-4 text-4xl font-bold">DMCA Note</h1>
-      <p className="text-2xl text-pink-200">
+      <p className="text-2xl text-primary-200">
         ReverAki operates independently and is not formally associated with nor
         endorsed by any of the anime studios responsible for the creation of the
         anime featured on this platform. Our website serves solely as a user
