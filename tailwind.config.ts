@@ -30,9 +30,67 @@ const config: Config = {
             },
           },
         },
+        secondaryDark: {
+          extend: 'dark',
+          colors: {
+            background: '#09020d',
+            primary: {
+              DEFAULT: '#9252d1',
+            },
+            secondary: {
+              DEFAULT: '#f45c92',
+            },
+          },
+        },
+        success: {
+          extend: 'dark',
+          colors: {
+            background: '#010804',
+            primary: {
+              DEFAULT: '#17c964',
+            },
+            success: {
+              DEFAULT: '#f45c92',
+            },
+          },
+        },
+        warning: {
+          extend: 'dark',
+          colors: {
+            background: '#0a0701',
+            primary: {
+              DEFAULT: '#f5a524',
+            },
+            warning: {
+              DEFAULT: '#17c964',
+            },
+          },
+        },
+        danger: {
+          extend: 'dark',
+          colors: {
+            background: '#0a0205',
+            primary: {
+              DEFAULT: '#f31260',
+            },
+            danger: {
+              DEFAULT: '#17c964',
+            },
+          },
+        },
+        navyBlue: {
+          extend: 'dark',
+          colors: {
+            background: '#01050a',
+            primary: {
+              DEFAULT: '#0a3066',
+            },
+          },
+        },
       },
     }),
   ],
 };
 
 export default config;
+
