@@ -21,6 +21,7 @@ import { getRandom } from '@/functions/utilityFunctions';
 import { ConsumetSearchResult } from '@/types/consumet';
 import useDebounce from '@/hooks/useDebounce';
 import { Image } from '@nextui-org/react';
+import { CiSettings } from 'react-icons/ci';
 
 const yesevaOne = Yeseva_One({
   subsets: ['latin', 'cyrillic', 'cyrillic-ext', 'latin-ext'],
@@ -113,8 +114,13 @@ export default function NavComp() {
           </NavbarItem>
         </NavbarContent>
         <NavbarContent justify="end">
-          <Button variant="light" onPress={() => handleOpen()}>
+          <Button isIconOnly variant="light" onPress={() => handleOpen()}>
             <BiSearch />
+          </Button>
+          <Button isIconOnly variant="light">
+            <a href="/settings">
+              <CiSettings />
+            </a>
           </Button>
         </NavbarContent>
       </Navbar>
