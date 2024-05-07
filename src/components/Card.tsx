@@ -66,7 +66,7 @@ export const Cards = ({ data }: { data: ConsumetAnimePage }) => {
             640: { slidesPerView: 3 },
             768: { slidesPerView: 4 },
             1024: { slidesPerView: 5 },
-            1280: { slidesPerView: 6 },
+            1280: { slidesPerView: 5 },
           }}
         >
           {data.results.map((anime) => (
@@ -76,7 +76,6 @@ export const Cards = ({ data }: { data: ConsumetAnimePage }) => {
                   className="rounded-lg"
                   whileHover={{
                     boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
-                    outline: `4px solid ${anime.color ?? '#326d6c'}`,
                   }}
                   whileTap={{ scale: 0.97 }}
                 >
@@ -88,7 +87,7 @@ export const Cards = ({ data }: { data: ConsumetAnimePage }) => {
                         alt={anime.title.english ?? anime.title.romaji}
                         width={300}
                         height={500}
-                        className="max-h-[310px] min-h-[310px] rounded-lg object-cover"
+                        className="max-h-[400px] min-h-[400px] object-cover"
                       />
                     </motion.div>
                   )}
@@ -171,3 +170,4 @@ export const Cards = ({ data }: { data: ConsumetAnimePage }) => {
     </>
   );
 };
+

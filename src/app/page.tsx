@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <>
       <Hero data={trendingAnime} />
-      <div className="mt-20">
+      <div className="ml-5 mt-20">
         <div
           style={{ color: trendingAnime.results[0].color }}
           className="mt-2 flex items-center gap-1 text-lg font-bold md:text-xl lg:text-2xl"
