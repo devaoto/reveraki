@@ -6,6 +6,11 @@ import TopProgressBar from '../components/ProgressBar';
 import NavComp from '@/components/Nav';
 import Footer from '@/components/footer';
 import { ScrollToTop } from '@/components/ScrollToTop';
+import dynamic from 'next/dynamic';
+
+const Changelogs = dynamic(() => import('@/components/Changelogs'), {
+  ssr: false,
+});
 
 const exo = Exo({ subsets: ['latin'] });
 
@@ -28,6 +33,7 @@ export default function RootLayout({
           <Footer />
           <TopProgressBar />
           <ScrollToTop />
+          <Changelogs />
         </Providers>
       </body>
     </html>
