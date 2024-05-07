@@ -80,9 +80,9 @@ export default function Settings() {
       <Breadcrumbs size="lg" separator="/">
         <BreadcrumbItem href="/">Home</BreadcrumbItem>
         <BreadcrumbItem href="/settings">Settings</BreadcrumbItem>
-        <BreadcrumbItem>Player</BreadcrumbItem>
+        <BreadcrumbItem>Home</BreadcrumbItem>
       </Breadcrumbs>
-      <h1 className="mt-10 text-3xl font-bold">Player Settings</h1>
+      <h1 className="mt-10 text-3xl font-bold">Home Settings</h1>
       <p className="max-w-[60%] text-gray-400">
         You can basically find all the home page settings here.
       </p>
