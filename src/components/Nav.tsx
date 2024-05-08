@@ -28,7 +28,7 @@ const yesevaOne = Yeseva_One({
   weight: ['400'],
 });
 
-export default function NavComp() {
+export default function NavComp({ active }: { active: string }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [searchResults, setSearchResults] =
     useState<ConsumetSearchResult | null>(null);
@@ -97,19 +97,33 @@ export default function NavComp() {
           </Link>
         </NavbarBrand>
         <NavbarContent className="hidden gap-4 sm:flex" justify="center">
-          <NavbarItem>
-            <Link color="foreground" href="/">
+          <NavbarItem isActive={active === ''}>
+            <Link color={active === '' ? 'primary' : 'foreground'} href="/">
               Home
             </Link>
           </NavbarItem>
-          <NavbarItem isActive>
-            <Link href="/trending" aria-current="page">
+          <NavbarItem isActive={active === 'trending'}>
+            <Link
+              color={active === 'trending' ? 'primary' : 'foreground'}
+              href="/trending"
+            >
               Trending
             </Link>
           </NavbarItem>
-          <NavbarItem>
-            <Link color="foreground" href="/popular">
+          <NavbarItem isActive={active === 'popular'}>
+            <Link
+              color={active === 'popular' ? 'primary' : 'foreground'}
+              href="/popular"
+            >
               Popular
+            </Link>
+          </NavbarItem>
+          <NavbarItem isActive={active === 'catalog'}>
+            <Link
+              color={active === 'catalog' ? 'primary' : 'foreground'}
+              href="/catalog"
+            >
+              Catalog
             </Link>
           </NavbarItem>
         </NavbarContent>

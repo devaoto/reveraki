@@ -3,10 +3,10 @@ import { Exo } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
 import TopProgressBar from '../components/ProgressBar';
-import NavComp from '@/components/Nav';
 import Footer from '@/components/footer';
 import { ScrollToTop } from '@/components/ScrollToTop';
 import dynamic from 'next/dynamic';
+import NavBarRenderer from './renderNav';
 
 const Changelogs = dynamic(() => import('@/components/Changelogs'), {
   ssr: false,
@@ -33,7 +33,7 @@ export default function RootLayout({
       <body className={`${exo.className} flex min-h-screen flex-col`}>
         <Providers>
           <ThemeProvider>
-            <NavComp />
+            <NavBarRenderer />
             <main className="flex-grow">{children}</main>
             <Footer />
             <TopProgressBar />
