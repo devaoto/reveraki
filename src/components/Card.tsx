@@ -87,7 +87,7 @@ export const Cards = ({ data }: { data: ConsumetAnimePage }) => {
                         alt={anime.title.english ?? anime.title.romaji}
                         width={300}
                         height={500}
-                        className="max-h-[400px] min-h-[400px] object-cover"
+                        className="max-h-[330px] min-h-[330px] object-cover lg:max-h-[400px] lg:min-h-[400px]"
                       />
                     </motion.div>
                   )}

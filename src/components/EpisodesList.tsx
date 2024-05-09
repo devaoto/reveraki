@@ -127,7 +127,11 @@ const EpisodesList = ({
                 <Link href={`/watch/${id}/${episode.number}`}>
                   <Button
                     color={'primary'}
-                    variant={current === episode.number ? 'solid' : 'ghost'}
+                    variant={
+                      Number(current) === Number(episode.number)
+                        ? 'solid'
+                        : 'ghost'
+                    }
                   >
                     {episode.number}
                   </Button>
