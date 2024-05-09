@@ -50,14 +50,14 @@ const EpisodesList = ({
           <BiAlignLeft />
         </Button>
       </div>
-      <div className="gap-2 overflow-x-hidden overflow-y-scroll">
+      <div className="overflow-x-hidden overflow-y-scroll">
         {layoutOption === 'grid' && (
-          <div className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+          <div className="grid grid-cols-3 gap-20 md:grid-cols-4 lg:grid-cols-5">
             {episodes.map((episode) => (
               <Tooltip key={episode.id} content={episode.title}>
                 <Link href={`/watch/${id}/${episode.number}`}>
                   <motion.div
-                    className="bg-base-200 cursor-pointer"
+                    className="bg-base-200 relative cursor-pointer overflow-hidden"
                     whileHover={{ scale: 1.02 }}
                   >
                     <div className="relative">
