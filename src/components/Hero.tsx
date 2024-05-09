@@ -94,6 +94,8 @@ const Hero = ({ data }: { data: ConsumetAnimePage }) => {
                     />
                   </>
                 )}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent from-[80%] to-background"></div>
+                <div className="absolute inset-0 bg-gradient-to-l from-transparent from-[80%] to-background"></div>
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background">
                   <div className="ml-5 flex h-full flex-col justify-end gap-8">
                     <div>
