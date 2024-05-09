@@ -50,9 +50,9 @@ const EpisodesList = ({
           <BiAlignLeft />
         </Button>
       </div>
-      <div className="gap-2 overflow-y-auto overflow-x-hidden">
+      <div className="gap-2 overflow-x-hidden overflow-y-scroll">
         {layoutOption === 'grid' && (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
+          <div className="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
             {episodes.map((episode) => (
               <Tooltip key={episode.id} content={episode.title}>
                 <Link href={`/watch/${id}/${episode.number}`}>
