@@ -482,7 +482,7 @@ export const getSeasonalAnime = async () => {
 export async function getInfo(id: string) {
   try {
     const response = await FetchDataAndCache(
-      `${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/info/${id}`,
+      `${process.env.NEXT_PUBLIC_DOMAIN}/api/v2/info/${id}`,
       `info:${id}`,
     );
     return await response;
@@ -544,6 +544,18 @@ export async function getThumbnails(id: string, episodeNumber: number) {
     const response = await FetchDataAndCache(
       `${process.env.NEXT_PUBLIC_DOMAIN}/api/v2/thumbnails/${id}?episodeNumber=${episodeNumber}`,
       `e_thumbails:${id}:ep${episodeNumber}`,
+    );
+    return await response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getStudio(id: string) {
+  try {
+    const response = await FetchDataAndCache(
+      `${process.env.NEXT_PUBLIC_DOMAIN}/api/v2/studios/${id}`,
+      `e_studios:${id}`,
     );
     return await response;
   } catch (error) {
