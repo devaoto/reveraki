@@ -6,6 +6,10 @@ export interface AnimeInfo extends AnimeData {
   studios: string[];
   startDate: StartDate;
   malId: string;
+  studiosInfo: {
+    id: string;
+    name: string;
+  }[];
 }
 
 export interface PageInfo {
@@ -147,3 +151,4 @@ export interface SiteAnime {
   episodes: SiteEpisode[];
   providerId: string;
 }
+
