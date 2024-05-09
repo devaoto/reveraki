@@ -12,6 +12,7 @@ import { ConsumetAnime } from '@/types/consumet';
 import { AnimeInfo, CharacterRes } from '@/types/site';
 import { Accordion, AccordionItem } from '@nextui-org/accordion';
 import dynamic from 'next/dynamic';
+import { Link } from '@nextui-org/react';
 
 const EpisodesList = dynamic(() => import('@/components/EpisodesList'), {
   ssr: false,
@@ -47,7 +48,14 @@ export const AccordionComponent = ({
           <div className="mt-10">
             <p>
               <strong className="font-bold">Studios: </strong>
-              {info.studios.join(', ')}
+              {info.studiosInfo.map((studio, index) => {
+                return (
+                  <React.Fragment key={studio.id}>
+                    <Link href={`/studio/${studio.id}`}>{studio.name}</Link>
+                    {index < info.studiosInfo.length - 1 && ', '}
+                  </React.Fragment>
+                );
+              })}
             </p>
             <p>
               <strong className="font-bold">Country: </strong>
