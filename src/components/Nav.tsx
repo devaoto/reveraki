@@ -129,11 +129,11 @@ export default function NavComp({ active }: { active: string }) {
         </NavbarContent>
         <NavbarContent justify="end">
           <Button isIconOnly variant="light" onPress={() => handleOpen()}>
-            <BiSearch />
+            <BiSearch className="size-6" />
           </Button>
           <Button isIconOnly variant="light">
             <a href="/settings">
-              <CiSettings />
+              <CiSettings className="size-6" />
             </a>
           </Button>
         </NavbarContent>
