@@ -6,6 +6,7 @@ import {
   IEpisode,
   convertToEpisode,
 } from '@/functions/utilityFunctions';
+import { getInfo } from '@/functions/requests';
 
 type Params = {
   params: {
@@ -235,9 +236,7 @@ export const GET = async (request: NextRequest, { params }: Params) => {
             timeout: 2000,
           })
           .catch((e) => undefined);
-        const informationPromise = axios
-          .get(`${process.env.NEXT_PUBLIC_DOMAIN}/api/v1/info/${params.id}`)
-          .catch((e) => undefined);
+        const informationPromise = getInfo(params.id);
 
         const [episodeImagesData, informationData] = await Promise.all([
           episodeImagesPromise,
@@ -258,7 +257,7 @@ export const GET = async (request: NextRequest, { params }: Params) => {
             ? (episodeImagesData.data as Promise<MetadataProviderData[]>)
             : new Promise((r) => r(undefined)),
           new Promise((r) => r(undefined)),
-          informationData?.data,
+          informationData,
         ]);
 
         if (provider === 'anirise') {

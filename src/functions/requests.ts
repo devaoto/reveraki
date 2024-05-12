@@ -3,6 +3,7 @@
 import { getCurrentSeason } from './utilityFunctions';
 import { cache } from './cache';
 import { SiteAnime, SiteEpisode } from '@/types/site';
+import { convertToCharacter, fetchAnilistInfo } from './info';
 
 const FetchDataAndCache = async (
   url: string,
@@ -480,15 +481,72 @@ export const getSeasonalAnime = async () => {
 };
 
 export async function getInfo(id: string) {
-  try {
-    const response = await FetchDataAndCache(
-      `${process.env.NEXT_PUBLIC_DOMAIN}/api/v2/info/${id}`,
-      `info:${id}`,
-    );
-    return await response;
-  } catch (error) {
-    console.error(error);
+  const cacheKey = `anilistInfo:V2:Data:${id}`;
+  let info: any = await cache.get(cacheKey);
+
+  if (!info) {
+    info = await fetchAnilistInfo({ id: id });
+    await cache.set(cacheKey, JSON.stringify(info), 5 * 60 * 60);
+  } else {
+    info = JSON.parse(info);
   }
+
+  let trailer;
+
+  try {
+    trailer = `https://www.${info.trailer.site}.com/watch?v=${info.trailer.id}`;
+  } catch (error) {
+    trailer = null;
+  }
+
+  return {
+    slug: info.title.romaji.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '-'),
+    id: info.id,
+    malId: info.malId,
+    title: {
+      native: info.title.native,
+      romaji: info.title.romaji,
+      english: info.title.english,
+    },
+    coverImage: info.cover,
+    bannerImage: info.image,
+    trailer: trailer,
+    status: info.status,
+    startDate: info.startDate,
+    season: info.season,
+    studios: info.studios,
+    studiosInfo: info.studiosInfo,
+    currentEpisode: info.currentEpisode ?? 0,
+    mappings: info.mappings ?? [],
+    synonyms: info.synonyms,
+    countryOfOrigin: info.countryOfOrigin,
+    description: info.description,
+    duration: info.duration,
+    color: info.color,
+    year: info.releaseDate,
+    recommendations: info.recommendations,
+    rating: {
+      anilist: info.rating / 10,
+      mal: 0,
+      tmdb: 0,
+    },
+    popularity: { mal: 0, tmdb: 0, anilist: info.popularity } ?? {
+      mal: 0,
+      tmdb: 0,
+      anilist: 0,
+    },
+    type: info.type,
+    format: info.format ?? '',
+    relations: info.relations,
+    totalEpisodes: info.totalEpisodes,
+    genres: info.genres,
+    tags: info.tags ?? [],
+    episodes: info.episodes ?? [],
+    averageRating: info.averageRating,
+    averagePopularity: info.averagePopularity ?? 0,
+    artwork: info.artwork ?? [],
+    characters: info.characters.map(convertToCharacter).filter(Boolean),
+  };
 }
 
 export async function getEpisodes(id: string) {
